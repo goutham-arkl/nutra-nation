@@ -1,0 +1,69 @@
+
+<%-include('partials/admin-header')-%>
+
+
+<section>
+  <div class="container">
+      <div class="row">
+          <div class="container d-flex justify-content-end mt-2 mb-5">
+             
+              <a class="btn btn-success" href="/admin/add-users" role="button">
+                  
+                  Add Users
+              </a>
+          </div>
+        
+      <div class="row">
+        <table id="myTable" class="table table-striped nowrap" style="width:100%" >
+            <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%for(i=0;i<users.length;i++){%>
+                <tr>
+                    <td><%=i+1%></td>
+                    <td><%=users[i].name%></td>
+                    <td><%=users[i].username%></td>
+                    
+                       
+                    
+                    <td><a href="/admin/edit-user?id=<%=users[i]._id%>" class="btn btn-primary">Edit</a>
+                        
+                            <%if(users[i].isBlocked == false){%>
+                           
+                           
+                            <a href="/admin/block-user?id=<%=users[i]._id%>" class="btn btn-warning"
+                                onclick="return confirm('Are you sure you want to block the user')">block</a>
+                                
+
+                                <%}else{%>
+                                    <a href="/admin/block-user?id=<%=users[i]._id%>" class="btn btn-success"
+                                        onclick="return confirm('Are you sure you want to Unblock the user')">unblock</a>
+                                   
+                                        <%}%>
+                                    <a href="/admin/delete-users?id=<%=users[i]._id%>" class="btn btn-danger"
+                                        onclick="return confirm('Are you sure you want to delete')">Delete</a>
+
+                    </td>
+                    <%}%>
+                </tr>
+                
+            </tbody>
+        </table>
+      </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+<%-include('partials/admin-footer')-%>
+

@@ -1,0 +1,195 @@
+<%-include('partials/header')-%>
+
+<!-- courosel-start -->
+<div id="carouselExampleIndicators" class="carousel slide w-100" data-mdb-ride="carousel">
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-mdb-target="#carouselExampleIndicators"
+        data-mdb-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-mdb-target="#carouselExampleIndicators"
+        data-mdb-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-mdb-target="#carouselExampleIndicators"
+        data-mdb-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="/images/4.webp" class="d-block w-100" alt="Wild Landscape"/>
+      </div>
+      <div class="carousel-item">
+        <img src="/images/1.webp" class="d-block w-100" alt="Camera"/>
+      </div>
+      <div class="carousel-item">
+        <img src="/images/2.webp" class="d-block w-100" alt="Exotic Fruits"/>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-mdb-target="#carouselExampleIndicators" data-mdb-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- courosel-end -->
+
+<!-- catagories -->
+<div class="text-center "><h1 class="mt-4">CATEGORIES</h1></div>
+
+
+ <%for(i=0;i<category.length;i++){%>
+
+  <%if(i%2!=0 ){%>
+
+
+
+<div class="container my-auto   mt-5">
+
+    <!--Grid row-->
+    <div class="row wow  fadeIn">
+
+      <!--Grid column-->
+      <div class="col-md-6  mb-4">
+
+        <img  src="/images/catagories/<%=category[i]._id%>.jpg" class="img-fluid" alt="">
+
+      </div>
+      
+
+      <!--Grid column-->
+      <div class="col-md-6 mb-4">
+
+        <!--Content-->
+        <div class="p-4">
+
+       
+            <h3><%=category[i].name%></h3>
+
+          <p class="lead font-weight-bold">Description</p>
+
+          <p><%=category[i].description%></p>
+
+          <form class="d-flex justify-content-left">
+            <!-- Default input -->
+           <button class="btn btn-primary btn-md my-0 bg-dark border-white" type="submit">SHOP NOW</button>
+
+          </form>
+
+        </div>
+        
+        <!--Content-->
+
+      </div>
+      
+      <!--Grid column-->
+
+    </div>
+
+    
+
+</div>
+  <%}else{%>
+
+
+<div class="container my-auto dark-grey-text mt-5">
+
+    <!--Grid row-->
+    <div class="row wow fadeIn flex-sm-column-reverse  flex-md-row bg-light">
+
+      <!--Grid column-->
+     
+
+      <!--Grid column-->
+      <div class="col-md-6 mb-4  ">
+
+        <!--Content-->
+        <div class="p-4 ">
+
+       
+            <h3><%=category[i].name%></h3>
+
+          <p class="lead font-weight-bold">Description</p>
+
+          <p><%=category[i].description%></p>
+
+          <form class="d-flex justify-content-left">
+            <!-- Default input -->
+           <button class="btn btn-primary btn-md my-0 bg-dark border-white" type="submit">SHOP NOW</button>
+
+          </form>
+
+        </div>
+        
+        <!--Content-->
+
+      </div>
+      <div class="col-md-6 mb-4 my-2">
+
+        <img  src="/images/catagories/<%=category[i]._id%>.jpg" class="img-fluid" alt="">
+
+      </div>
+      
+      
+      <!--Grid column-->
+
+    </div>
+
+    
+
+</div>
+ <%}%>
+
+<%}%>
+<div id="aboutus" class="text-center"><h1 class="mt-4">ABOUT US</h1></div>
+
+
+<div class="container dark-grey-text mt-5 mb-4" >
+
+  <!--Grid row-->
+  <div class="row wow fadeIn flex-sm-column-reverse  flex-md-row bg-light">
+
+    <!--Grid column-->
+   
+
+    <!--Grid column-->
+    <div class="col-12  ">
+
+      <!--Content-->
+      <div class="p-4 ">
+
+     
+          
+
+        
+
+        <p style="font-size: 1.2em;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.></p>
+      
+      </div>
+    </div>  
+      
+
+  </div>
+
+  
+
+</div>
+
+
+
+
+
+<%-include('partials/footer')-%>

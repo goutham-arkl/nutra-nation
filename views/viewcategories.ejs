@@ -1,0 +1,70 @@
+<%-include('partials/admin-header')-%>
+
+
+<section>
+  <div class="container">
+      <div class="row">
+          <div class="container d-flex justify-content-end mt-2 mb-5">
+              
+              <a class="btn btn-success"  href="/admin/add-category">
+                  Add Category
+              </a>
+          </div>
+          <div class="collapse" id="collapseExample">
+              <div class="card card-body border border-1">
+                  <form action="/admin/products/addcategory" method="post" class="form-inline">
+                      <div class="form-group mb-2">
+                          <input type="text" class="form-control" name="categoryName"  placeholder="Category Name">
+                      </div>
+                      <div class="form-outline mb-4">
+                        <textarea class="form-control" name="description" id="form4Example3" rows="4"></textarea>
+                        <label class="form-label" for="form4Example3">Description</label>
+                      </div>
+
+                      <div class="custom-file">
+                        <label>Choose the image</label>
+                      <input type="file" class="custom-file-input" id="validatedCustomFile" name="image" required>
+                      <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                    
+                    </div>
+                      <button type="submit m-2" class="btn btn-dark mb-2">Add</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <table class="table" id="example">
+              <thead>
+                  <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Image</th>
+                      <th scope="col">Actions</th>
+                     
+                  </tr>
+              </thead>
+              <tbody>
+                <%for(i=0;i<categories.length;i++){%>
+                  <tr>
+                      <th scope="row"><%=i+1%></th>
+                      <td><%=categories[i].name%></td>
+                      <td><%=categories[i].description%></td>
+                      <td>
+                        <img style="width: 50px;height: 50px;" src="/images/catagories/<%= categories[i]._id%>.jpg" alt="image">
+                    </td>
+                      <td><a href="/admin/edit-category?id=<%=categories[i]._id%>" class="btn btn-primary">Edit</a>
+                        <a href="/admin/delete-catagory?id=<%=categories[i]._id%>" class="btn btn-danger"
+                            onclick="return confirm('Are you sure you want to delete')">Delete</a></td>
+                            
+                      
+                  </tr>
+                  <%}%>
+              </tbody>
+          </table>
+      </div>
+
+  </div>
+</section>
+
+<%-include('partials/admin-footer')-%>
