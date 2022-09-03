@@ -1,22 +1,20 @@
 <%-include('partials/header')-%>
 
-<div class="container">
+<div class="container vh-100">
     <div class="row">
 
         <%for(i=0;i<product.length;i++){%>
 
-        <div class="col-6 col-md-4 col-lg-3 col-xl-3 mt-4 "     >
+        <div class="col-6 col-md-4 col-lg-3 col-xl-3 mt-4">
 
-                
+
            
 
             <div class="card" style="width: 18rem; overflow: hidden;">
-                <div  style="overflow: hidden;">
-                  <a href="/single-product?id=<%=product[i]._id%>"> <img style=" height: 30vh;" src="/images/products/<%=product[i]._id%>.jpg" class="card-img-top zoom-product" alt="..."></a>
-               </div>
+             <a href="/single-product?id=<%=product[i]._id%>"> <img style="overflow: hidden;" src="/images/products/<%=product[i]._id%>.jpg" class="card-img-top zoom-product" alt="..."></a>
              <div class="card-body ">
                  
-                    <p class="card-text element text-uppercase font-weight-bold  "><%=product[i].name%></p>
+                    <p class="card-text text-uppercase font-weight-bold  "><%=product[i].name%></p>
                     <p class="card-text element font-weight-light">Rs <%=product[i].description%></p>
                      <div class="d-flex justify-content-between">
                         <p class="card-text  font-weight-bold  ">Rs. <%=product[i].price%></p>

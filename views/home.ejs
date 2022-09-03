@@ -49,6 +49,7 @@
 
 <!-- catagories -->
 <div class="text-center "><h1 class="mt-4">CATEGORIES</h1></div>
+  
 
 
  <%for(i=0;i<category.length;i++){%>
@@ -83,11 +84,12 @@
 
           <p><%=category[i].description%></p>
 
-          <form class="d-flex justify-content-left">
+          
+          <form action="/category/<%=category[i]._id%>" class="d-flex justify-content-left">
             <!-- Default input -->
-           <button class="btn btn-primary btn-md my-0 bg-dark border-white" type="submit">SHOP NOW</button>
-
+          <button  class="btn btn-primary btn-md my-0 bg-dark border-white" type="submit">SHOP NOW</button>
           </form>
+
 
         </div>
         
@@ -126,9 +128,9 @@
 
           <p><%=category[i].description%></p>
 
-          <form class="d-flex justify-content-left">
+          <form action="/category/<%=category[i]._id%>" class="d-flex justify-content-left">
             <!-- Default input -->
-           <button class="btn btn-primary btn-md my-0 bg-dark border-white" type="submit">SHOP NOW</button>
+           <button class="btn btn-primary btn-md my-0 bg-dark border-white"   type="submit">SHOP NOW</button>
 
           </form>
 

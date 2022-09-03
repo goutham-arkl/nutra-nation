@@ -12,24 +12,55 @@ const authToken="cd476e12c375e4cff342546ff356f1ae"
 const client=require('twilio')(accountSID,authToken)
 
 
+
+const verifyLogin=(req,res,next)=>{
+  if(req.session.loggedIn)
+  {
+    next()
+  }
+  else
+  {
+    res.redirect('/login')
+  }
+}
+
 /* GET home page. */
-router.get('/',  function(req, res) {
+router.get('/', async function(req, res) {
+ 
 
+  
   res.setHeader('cache-control', 'private,no-cache,no-store,must-revalidate')
+   productHelpers.viewCategory().then(async(category)=>{
+    
 
-   productHelpers.viewCategory().then((category)=>{
-    if(req.session.user){
    
-
-      res.render('home',{user:req.session.user,category})
+  
+    let cartCount=0
+   
+   
+    if(req.session.user){
+    
+      let user= req.session.user
+      console.log(user);
+      let cartCount= await userHelper.getCartCount(user._id)
+      console.log('oooooooooooooooooooooooooooooooooooooooooo');
+     
+     
+      res.render('home',{user:req.session.user,category,cartCount})
       
     }
+    
     else{
-      res.render('home',({user:req.session.user,category}))
+      // category = category._W
+      console.log(category);
+      res.render('home',({user:req.session.user,category,cartCount}))
       // res.redirect('/login')
     
   }
+
    })
+   
+   
     
 
    
@@ -83,7 +114,7 @@ router.post('/login',(req,res)=>{
     else  if(response.status){
       req.session.loggedIn=true
      
-      req.session.user=req.body.username
+      req.session.user=response.user
       res.redirect('/')
     }
     else{
@@ -152,9 +183,14 @@ router.post('/verify-otp',(req,res)=>{
 
 
 router.get('/shop',(req,res)=>{
-  productHelpers.viewproducts().then((product)=>{
-    res.render('shop',{user:req.session.user,product})
-  })
+ let product= productHelpers.viewproducts().then((product)=>{
+  console.log(product._W);
+    cartCount=null
+    res.render('shop',{user:req.session.user,product,cartCount})
+
+ })
+    
+  
   
 })
 router.get('/single-product',(req,res)=>{
@@ -162,10 +198,52 @@ router.get('/single-product',(req,res)=>{
  productHelpers.getProductDetails(proId).then((product)=>{
 
   console.log(product);
-  res.render('singleproduct',{user:req.session.user,product})
+  res.render('singleproduct',{user:req.session.user,product,cartCount})
 
  })
  
+})
+
+router.get('/category/:id',(req,res)=>{
+  let categoryid=req.params.id
+ console.log('roarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+  console.log(categoryid);
+  productHelpers.getCategoryDetails(categoryid).then((category)=>{
+    console.log(category);
+    userHelper.getcategory(category.name).then((product)=>{
+      console.log(product);
+      res.render('category-view',{user:req.session.user,product,cartCount})
+    })
+    
+   
+  })
+
+})
+
+
+
+router.get('/add-to-cart/:id',verifyLogin,(req,res)=>{
+
+  console.log(req.params.id);
+
+  console.log(req.session.user._id);
+  userHelper.addToCart(req.params.id,req.session.user._id).then(()=>{
+    res.redirect('/')
+  })
+})
+
+router.get('/cart',verifyLogin,async(req,res)=>{
+ 
+  let products=await userHelper.getCartProducts(req.session.user._id)
+  console.log(products);
+  let cartCount=null
+  res.render('cart',{user:req.session.user,products,cartCount})
+})
+
+router.get('/remove-product',(req,res)=>{
+  let proId=req.query.id
+ let user=req.session.user
+  userHelper.remove-product-fromCart(proId,user)
 })
 
 
@@ -173,5 +251,7 @@ router.get('/logout',(req,res)=>{
   req.session.destroy()
   res.redirect('/')
 })
+
+
 
 module.exports = router;

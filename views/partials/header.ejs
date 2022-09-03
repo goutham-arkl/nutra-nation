@@ -72,8 +72,8 @@ rel="stylesheet"
            <!-- Right elements -->
            <div class="d-flex align-items-center me-3">
              <!-- Icon -->
-             <a class="link-grayish me-3" href="#">
-               <i class="fas fa-shopping-cart"></i>
+             <a class="link-grayish me-3" href="/cart">
+               <i class="fas fa-shopping-cart">  <span class="badge rounded-pill badge-notification bg-danger"><%=cartCount%></span></i>
              </a>
        
              <!-- Notifications -->
@@ -87,7 +87,7 @@ rel="stylesheet"
                  aria-expanded="false"
                >
                  <i class="fas fa-bell"></i>
-                 <span class="badge rounded-pill badge-notification bg-danger">1</span>
+               
                </a>
                <ul
                  class="dropdown-menu dropdown-menu-end"
