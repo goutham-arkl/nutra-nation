@@ -1,0 +1,19 @@
+ <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                        <button class="btn btn-link px-2"
+                          onclick="changeQuantity('<%=products[i]._id%>','<%=products[i].productitems[i]._id%>',1)">
+                          <i class="fas fa-minus"></i>
+                        </button>
+  
+                        <input id="form1" min="0" name="quantity" value="<%=products[i].quantity%>" type="number"
+                          class="form-control form-control-sm" />
+  
+                        <button class="btn btn-link px-2"
+                        onclick="changeQuantity('<%=products[i]._id%>','<%=products[i].productitems[i]._id%>',-1)">
+                          <i class="fas fa-plus"></i>
+                        </button>
+                      </div>
+
+                      /////////////////////////////////////////
+
+                      <input id="<%=products[i].productsitems._id%>" name="quantity" value="<%=products[i].quantity%>" type="number"
+                      class="form-control form-control-sm" />

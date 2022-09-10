@@ -1,0 +1,68 @@
+<%-include('partials/header')-%>
+
+
+<section>
+  <div class="container">
+      <div class="row">
+          
+          <div class="collapse" id="collapseExample">
+              <div class="card card-body border border-1">
+                  <form action="/admin/products/addcategory" method="post" class="form-inline">
+                      <div class="form-group mb-2">
+                          <input type="text" class="form-control" name="categoryName"  placeholder="Category Name">
+                      </div>
+                      <div class="form-outline mb-4">
+                        <textarea class="form-control" name="description" id="form4Example3" rows="4"></textarea>
+                        <label class="form-label" for="form4Example3">Description</label>
+                      </div>
+
+                      <div class="custom-file">
+                        <label>Choose the image</label>
+                      <input type="file" class="custom-file-input" id="validatedCustomFile" name="image" required>
+                      <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                    
+                    </div>
+                      <button type="submit m-2" class="btn btn-dark mb-2">Add</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <table class="table" id="example">
+              <thead>
+                  <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Address</th>
+                      <th scope="col">pincode</th>
+                      <th scope="col">Mobile</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">status</th>
+                     
+                  </tr>
+              </thead>
+              <tbody>
+                 <%for(i=0;i<orders.length;i++){%>
+                  <tr>
+                      <th scope="row"><%=i+1%></th>
+                      <td><%=orders[i].date%></td>
+                      <td><%=orders[i].deliveryDetails.address%></td>
+                      <td><%=orders[i].deliveryDetails.pincode%></td>
+                      <td><%=orders[i].deliveryDetails.mobile%></td>
+                      <td><%=orders[i].totalAmount[0].total%></td>
+                      <td><%=orders[i].status%></td>
+                     
+                      <td><a href="/view-order-products/<%=orders[i]._id%>" class="btn btn-dark">View Products</a>
+                        </td>
+                            
+                      
+                  </tr>
+                  <%}%>
+              </tbody>
+          </table>
+      </div>
+
+  </div>
+</section>
+
+<%-include('partials/footer')-%>

@@ -74,3 +74,9 @@ body{background-color: #ecedee}.card{border: none;overflow: hidden}.thumbnail_im
     border-bottom-right-radius: 16px;
     }
     }
+    .grid{
+      display: grid;
+      place-items: center;
+      border: 1px solid #000;
+    
+    }
