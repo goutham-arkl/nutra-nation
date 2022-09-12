@@ -1,8 +1,10 @@
 var db=require('../config/connection')
 var collection=require('../config/collections')
+const Promise=require('promise')
 const collections = require('../config/collections')
-const { ObjectId } = require('mongodb')
+
 const { response } = require('../app')
+const { resolve, reject } = require('promise')
 var objectId=require('mongodb').ObjectId
 module.exports={
 
@@ -11,7 +13,7 @@ module.exports={
         return new Promise(async(resolve,reject)=>{
             let loginStatus=false
             let response={}
-            
+            console.log('*********************');
             let user= await db.get().collection(collection.ADMIN_COLLECTION).findOne({username:userData.username})
             
 
@@ -139,7 +141,28 @@ module.exports={
                 })
             })  
         
+    },
+    getUserOrders:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let orders=await db.get().collection(collections.ORDER_COLLECTION).find().toArray()
+            
+            resolve(orders)
+        })
+    },
+    changeStatus:(orderId,Status)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.ORDER_COLLECTION).updateOne({_id:objectId(orderId)},{
+            
+            $set:{
+                status:Status
+
+            }
+          
+        })
+        resolve()
+        })
     }
+
 }
 
 

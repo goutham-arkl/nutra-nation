@@ -48,7 +48,7 @@ router.get('/', async function(req, res) {
       
      
      
-      res.render('home',{user:req.session.user,category,cartCount})
+      res.render('home',{user:req.session.user.name,category,cartCount})
       
     }
     
@@ -82,14 +82,14 @@ router.get('/signup',(req,res)=>{
 router.post('/submit',(req,res)=>{
  
   userHelper.doSignup(req.body).then((response)=>{
-    
+
     res.redirect('/login')
   })
 })
 
 router.get('/login',function(req,res){
   console.log('yahoooooooooooooo');
-  console.log( req.session.user);
+ 
   if(req.session.user)
   {
     res.redirect('/')
@@ -214,9 +214,10 @@ router.get('/category/:id',(req,res)=>{
 
 
   productHelpers.getCategoryDetails(categoryid).then((category)=>{
-    console.log(category);
+    
     userHelper.getcategory(category.name).then((product)=>{
       console.log(product[0]);
+      let cartCount =null
       res.render('category-view',{user:req.session.user,product,cartCount})
     })
     
@@ -240,11 +241,22 @@ router.get('/add-to-cart/:id',verifyLogin,(req,res)=>{
 router.get('/cart',verifyLogin,async(req,res)=>{
   try{
  let products=await userHelper.getCartProducts(req.session.user._id)
-     await userHelper.getTotalAmount(req.session.user._id).then((total)=>{
+
+ console.log(products);
+    
+    if(products.length>0)
+    {
+      await userHelper.getTotalAmount(req.session.user._id).then((total)=>{
   
-      let cartCount=null
-      res.render('cart',{user:req.session.user,products,cartCount,total})
-     })
+        let cartCount=null
+        res.render('cart',{user:req.session.user,products,cartCount,total})
+       })
+    }
+    else{
+
+      res.render('empty-cart',{user:req.session.user.name,cartCount:null})
+    }
+     
  
   }catch(err){
     console.log(err,'error happened at cart');
@@ -297,16 +309,22 @@ router.get('/order-placed',(req,res)=>{
   res.render('order-placed',{user:req.session.user,cartCount})
 })
 
-router.get('/orders',async(req,res)=>{
+router.get('/orders',verifyLogin,async(req,res)=>{
 
   let orders = await userHelper.getUserOrders(req.session.user._id)
-  res.render('orders',{user:req.session.user,orders})
+  res.render('orders',{user:req.session.user,orders,cartCount:null})
 })
+
 router.get('/view-order-products/:id',async(req,res)=>{
   let products=await userHelper.getOrderProducts(req.params.id)
 res.render('view-order-products',{Orderedproducts:products,cartCount:null,user:req.session.user._id})
   
   
+})
+
+router.get('/cancel-order/:id',async(req,res)=>{
+  userHelper.cancelOrder(req.params.id)
+  res.redirect('/orders')
 })
 
 router.get('/logout',(req,res)=>{

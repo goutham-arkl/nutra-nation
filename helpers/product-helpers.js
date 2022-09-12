@@ -3,6 +3,7 @@ const { response } = require('../app')
 const collections = require('../config/collections')
 var db=require('../config/connection')
 const Promise=require('promise')
+const { resolve } = require('promise')
 var objectId=require('mongodb').ObjectId
 module.exports={
     
@@ -17,12 +18,22 @@ module.exports={
         })
     },
     addcategory:(category,callback)=>{
+        
+     let  categoryExist=db.get().collection(collections.CATEGORY_COLLECTION).find(category)
+        if(categoryExist)
+        {   console.log('category Exist');
+            resolve(err='category already exist')
+        }
+        else{
+            db.get().collection(collections.CATEGORY_COLLECTION).insertOne(category).then((data)=>{
+                callback(data.insertedId)
+            }).catch((err)=>{
+                console.log(err);
+            })
 
-        db.get().collection(collections.CATEGORY_COLLECTION).insertOne(category).then((data)=>{
-            callback(data.insertedId)
-        }).catch((err)=>{
-            console.log(err);
-        })
+        }
+
+        
     },
 
     viewproducts:()=>{ 

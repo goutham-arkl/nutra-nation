@@ -23,7 +23,10 @@ router.get('/login',(req,res)=>{
 })
 
 router.post('/login',(req,res)=>{
-  adminHelper.adminLogin(req.body).then((response)=>{
+ let admin=req.body
+
+  adminHelper.adminLogin(admin).then((response)=>{
+   
    
 
     if(response.status){
@@ -270,6 +273,22 @@ router.post('/update-category',(req,res)=>{
     res.redirect('/view-category')
 
   })
+
+})
+
+router.get('/orders',async(req,res)=>{
+  let orders=await adminHelper.getUserOrders()
+  res.render('view-orders',{orders})
+
+
+})
+
+router.post('/change-status',(req,res)=>{
+ let orderId=req.query.id
+ let status=req.body.status
+ console.log(status);
+ adminHelper.changeStatus(orderId,status)
+ res.redirect('/admin/orders')
 
 })
 

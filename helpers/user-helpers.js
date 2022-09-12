@@ -19,10 +19,14 @@ module.exports={
     doSignup:(userData)=>{
         userData.isBlocked=false
         return new Promise(async(resolve,reject)=>{
+
+        
+           
             userData.password= await bcrypt.hash(userData.password,10)
             db.get().collection(collection.USER_COLLECTION).insertOne(userData).then((data)=>{
                 resolve(data.ops)
             })
+          
         })
 
     },
@@ -352,6 +356,18 @@ module.exports={
             ]).toArray()
             console.log(products);
             resolve(products)
+        })
+    },
+    cancelOrder:(orderId)=>{
+        console.log('**');
+        console.log(orderId);
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.ORDER_COLLECTION).updateOne({_id:objectId(orderId)},{
+                $set:{
+                status:"Cancelled"
+                }
+            })
+            resolve()
         })
     }
    

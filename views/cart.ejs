@@ -1,22 +1,23 @@
 <%-include('partials/header')-%>
 
-<section class="h-100 h-custom" style="background-color: #d2c9ff;">
+<section class="h-100 h-custom" style="background-color: #d2c9ff; ">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-12">
-          <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          <div class="card card-registration card-registration-2" style="border-radius: 15px; height: 70vh;">
             <div class="card-body p-0">
               <div class="row g-0">
                 <div class="col-lg-8">
                   <div class="p-5">
-                    <div class="d-flex justify-content-between align-items-center mb-5">
+                    <div class="d-flex justify-content-between align-items-center mb-5" >
                       <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
                       <!-- <h6 class="mb-0 text-muted">3 items</h6> -->
                     </div>
                     <hr class="my-4">
   
                    
-  
+                    
+                    
   
                    <%for(i=0;i<products.length;i++){%>
     
@@ -59,6 +60,7 @@
                     </div>
 
                     <%}%>
+                    
   
                     <hr class="my-4">
   
@@ -73,21 +75,10 @@
                     <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
                     <hr class="my-4">
   
-                    <div class="d-flex justify-content-between mb-4">
-                      <h5 class="text-uppercase">items 3</h5>
-                      <h5>5000</h5>
-                    </div>
   
-                    <h5 class="text-uppercase mb-3">Shipping</h5>
+                   
   
-                    <div class="mb-4 pb-2">
-                      <select class="select">
-                        <option value="1">Standard-Delivery- €5.00</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                        <option value="4">Four</option>
-                      </select>
-                    </div>
+                   
   
                     <h5 class="text-uppercase mb-3">Give code</h5>
   
@@ -119,6 +110,7 @@
   </section>
 
   <script>
+
     function changeQuantity(cartId,proId,userId,count){
       
       let quantity = parseInt(document.getElementById(proId).innerHTML)
@@ -136,7 +128,8 @@
         method:'post',
         success:(response)=>{
           
-          if (response.removeProduct) {
+
+            if (response.removeProduct) {
           alert("Product Removed from cart")
           location.reload()
         } else {
@@ -144,9 +137,15 @@
           document.getElementById(proId).innerHTML = quantity + count
           document.getElementById('total').innerHTML=response.total
 
+          }
+      
+          
+          
+          
+
           
          
-        }
+        
           
         }
 
@@ -177,6 +176,7 @@
         }
       })
     }
+
   </script>
 
 

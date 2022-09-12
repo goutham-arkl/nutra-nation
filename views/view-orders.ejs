@@ -1,0 +1,66 @@
+<%-include('partials/admin-header')-%>
+
+<section>
+    <div class="container">
+        
+        <div class="row">
+            <table class="table  table-striped nowrap" id="form">
+                <thead >
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">pincode</th>
+                        <th scope="col">Mobile</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">status</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                   <%for(i=0;i<orders.length;i++){%>
+                    <tr>
+                        <th scope="row"><%=i+1%></th>
+                        <td><%=orders[i].date%></td>
+                        <td><%=orders[i].deliveryDetails.address%></td>
+                        <td><%=orders[i].deliveryDetails.pincode%></td>
+                        <td><%=orders[i].deliveryDetails.mobile%></td>
+                        <td><%=orders[i].totalAmount[0].total%></td>
+  
+                       
+                        <td>
+                            <%if(orders[i].status!='Cancelled'){%>
+                                <form action="/admin/change-status?id=<%=orders[i]._id%>" method="post">
+                                    <select class="form-select" name="status" aria-label="Default select example">
+                                        <option selected><%=orders[i].status%></option>
+                                        <option value="Shipped">Shipped</option>
+                                        <option value="Out for delivery">Out for delivery</option>
+                                        <option value="Delivered">Delivered</option>
+                                        <option value="Cancelled">Cancel</option>
+                                      </select>
+                                      <button class="btn btn-dark" type="submit"> confirm</button>
+
+                                </form>
+
+                                <%}else if(orders.status=='Delivered'){%>
+                                    <span class="text-success font-weight-bold"> <%=orders[i].status%></span>
+                              
+                              <%}else{%>
+                                <span class="text-muted font-weight-bold"> <%=orders[i].status%></span>
+                                <%}%>
+                          
+                          </td>
+                           
+                        
+                    </tr>
+                    <%}%>
+                </tbody>
+            </table>
+        </div>
+  
+    </div>
+  </section>
+  
+
+
+<%-include('partials/admin-footer')-%>

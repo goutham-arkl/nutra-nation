@@ -3,33 +3,10 @@
 
 <section>
   <div class="container">
+      
       <div class="row">
-          
-          <div class="collapse" id="collapseExample">
-              <div class="card card-body border border-1">
-                  <form action="/admin/products/addcategory" method="post" class="form-inline">
-                      <div class="form-group mb-2">
-                          <input type="text" class="form-control" name="categoryName"  placeholder="Category Name">
-                      </div>
-                      <div class="form-outline mb-4">
-                        <textarea class="form-control" name="description" id="form4Example3" rows="4"></textarea>
-                        <label class="form-label" for="form4Example3">Description</label>
-                      </div>
-
-                      <div class="custom-file">
-                        <label>Choose the image</label>
-                      <input type="file" class="custom-file-input" id="validatedCustomFile" name="image" required>
-                      <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                    
-                    </div>
-                      <button type="submit m-2" class="btn btn-dark mb-2">Add</button>
-                  </form>
-              </div>
-          </div>
-      </div>
-      <div class="row">
-          <table class="table" id="example">
-              <thead>
+          <table class="table  table-striped nowrap" id="example">
+              <thead class="my-5 bg-dark text-white mx-2">
                   <tr>
                       <th scope="col">No</th>
                       <th scope="col">Date</th>
@@ -38,6 +15,7 @@
                       <th scope="col">Mobile</th>
                       <th scope="col">Amount</th>
                       <th scope="col">status</th>
+                      <th scope="col">Action</th>
                      
                   </tr>
               </thead>
@@ -50,11 +28,20 @@
                       <td><%=orders[i].deliveryDetails.pincode%></td>
                       <td><%=orders[i].deliveryDetails.mobile%></td>
                       <td><%=orders[i].totalAmount[0].total%></td>
-                      <td><%=orders[i].status%></td>
+
+                      <%if(orders[i].status!='Cancelled'){%>
+                      <td><span class="text-success font-weight-bold"><%=orders[i].status%></span></td>
+                      <%}else{%>
+                        <td><span class="text-danger font-weight-bold"><%=orders[i].status%></span></td>
+                        
+                        <%}%>
                      
                       <td><a href="/view-order-products/<%=orders[i]._id%>" class="btn btn-dark">View Products</a>
+                        
                         </td>
-                            
+                        <%if(orders[i].status!='Cancelled'){%>
+                        <td><a href="/cancel-order/<%=orders[i]._id%>" class="btn btn-danger">Cancel</a></td>
+                          <%}%>  
                       
                   </tr>
                   <%}%>
