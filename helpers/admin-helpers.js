@@ -161,6 +161,73 @@ module.exports={
         })
         resolve()
         })
+    },
+    //////////////////Graph///////////////////////
+    getWeeks: () => {
+        return new Promise(async (resolve, reject) => {
+            let weeks = await db.get().collection(collections.ORDER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        date: {
+                            $gte: new Date(new Date() - 7 * 7 * 60 * 60 * 24 * 1000)
+                        },
+                    }
+                },
+                {
+                    $project: {
+                        date: '$date',
+                        week: { $week: "$date" },
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$week",
+                        count: { $sum: 1 },
+                    }
+                },
+                {
+                    $sort: {
+                        _id: 1
+                    }
+                },
+
+            ]).toArray()
+            
+            resolve(weeks)
+        })
+    },
+
+    getMonths: () => {
+        return new Promise(async (resolve, reject) => {
+            let month = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        date: {
+                            $gte: new Date(new Date().getMonth()-10)
+                        },
+                    }
+                },
+                {
+                    $project: {
+                        date: '$date',
+                        month: { $month: "$date" },
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$month",
+                        count: { $sum: 1 },
+                    }
+                },
+                {
+                    $sort: {
+                        _id: 1
+                    }
+                },
+
+            ]).toArray()
+            resolve(month)
+        })
     }
 
 }

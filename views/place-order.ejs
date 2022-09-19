@@ -1,161 +1,229 @@
-  <!-- Navbar -->
-  <%-include('partials/header')-%>
+<!-- Navbar -->
+<%-include('partials/header')-%>
 
-  <!-- Navbar -->
+<!-- Navbar -->
 
-  <!--Main layout-->
-  <main class="mt-5 pt-4">
-    <div class="container wow fadeIn">
+<!--Main layout-->
+<main class="mt-5 pt-4">
+  <div class="container wow fadeIn">
+    <!-- Heading -->
+    <h2 class="my-5 h2 text-center">Checkout form</h2>
 
-      <!-- Heading -->
-      <h2 class="my-5 h2 text-center">Checkout form</h2>
-
-      <!--Grid row-->
-      <div class="row">
-
-        <!--Grid column-->
-        <div class="col-md-8 mb-4">
-
-          <!--Card-->
-          <div class="card">
-
-            <!--Card content-->
-            <form class="card-body" id="checkout-form" >
-
-              <!--Grid row-->
-              <div class="row">
-
-               
-
-              
+    <!--Grid row-->
+    <div class="row">
+      <!--Grid column-->
+      <div class="col-md-8 mb-4">
+        <!--Card-->
+        <div class="card">
+          <!--Card content-->
+         
+            <!--Grid row-->
+            <div class="row">
               <!--address-->
               <div class="md-form mb-5">
-                <input type="text" name="address" class="form-control" placeholder="Address">
-                
-              </div>
+                <!-- Tabs navs -->
+                <ul class="nav nav-tabs nav-fill mb-3" id="ex1" role="tablist">
+                  <li class="nav-item "  role="presentation">
+                    <a
+                      class="nav-link active"
+                      id="ex2-tab-1"
+                      data-mdb-toggle="tab"
+                      href="#ex2-tabs-2"
+                      role="tab"
+                      aria-controls="ex2-tabs-1"
+                      aria-selected="true"
+                      >CHOOSE AN ADDRESS</a
+                    >
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <a
+                      class="nav-link "
+                      id="ex2-tab-2"
+                      data-mdb-toggle="tab"
+                      href="#ex2-tabs-1"
+                      role="tab"
+                      aria-controls="ex2-tabs-2"
+                      aria-selected="false"
+                      >ADD ADDRESS</a
+                    >
+                  </li>
+                </ul>
+                <!-- Tabs navs -->
 
-            
-             
-
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-6 mb-4">
-
-                  <label for="PIN">PIN code</label>
-                  <input type="text" class="form-control" name="pincode" placeholder="" required>
-                  <div class="invalid-feedback">
-                    PIN code required.
-                  </div>
-
-                </div>
-                <!--Grid column-->
-                <div class="col-lg-4 col-md-6 mb-4">
-
-                    <label for="Mobile">Mobile</label>
-                    <input type="number" class="form-control" name="mobile" placeholder="" required>
-                    <input type="text" name="userId" id="" value="<%=user._id%>" hidden>
-                    <div class="invalid-feedback">
-                      PIN code required.
+                <!-- Tabs content -->
+                <div class="tab-content" id="ex2-content">
+                  <div
+                    class="tab-pane fade "
+                    id="ex2-tabs-1"
+                    role="tabpanel"
+                    aria-labelledby="ex2-tab-1"
+                  >
+                  <form action="/add-address" method="post">
+                    <div class="container">
+                      <label>Address</label>
+                      <div>
+                        <textarea
+                          name="address"
+                          cols="70"
+                          rows="10"
+                        ></textarea>
+                      </div>
+                      <div>
+                        <button class="btn btn-dark mt-3">ADD</button>
+                      </div>
                     </div>
-  
+                  </form>
                   </div>
-
-              </div>
-              <!--Grid row-->
-
-            
-
-              <div class="d-block my-3">
-                <div class="custom-control custom-radio">
-                    <input value="cod" name="paymentMethod" type="radio" class="custom-control-input" checked required>
-                    <label class="custom-control-label" for="cod">COD(Cash on Delivery)</label>
+                  <div
+                    class="tab-pane fade show active"
+                    id="ex2-tabs-2"
+                    role="tabpanel"
+                    aria-labelledby="ex2-tab-2"
+                  >
+                  <form action="/place-order" id="checkout-form" method="post">
+                    <%for(i=0;i<address.length;i++){%>
+                      <input type="radio" value="<%=address[i].address%>" name="address"><%=address[i].address%> <br>
+                      <%}%>
                   </div>
-                <div class="custom-control custom-radio">
-                  <input value="credit" name="paymentMethod" type="radio" class="custom-control-input"  required>
-                  <label class="custom-control-label" for="credit">Credit card</label>
-                </div>
-                <div class="custom-control custom-radio">
-                  <input value="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
-                  <label class="custom-control-label" for="debit">Debit card</label>
-                </div>
-                <div class="custom-control custom-radio">
-                  <input value="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
-                  <label class="custom-control-label" for="paypal">Paypal</label>
                 </div>
               </div>
-             
-             
-              <hr class="mb-4">
-              <button class="btn btn-dark btn-lg btn-block" type="submit">Continue to checkout</button>
+              <form class="card-body" id="checkout-form">
+              <!--Grid column-->
+              <div class="col-lg-4 col-md-6 mb-4">
+                <label for="PIN">PIN code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="pincode"
+                  placeholder=""
+                  required
+                />
+                <div class="invalid-feedback">PIN code required.</div>
+              </div>
+              <!--Grid column-->
+              <div class="col-lg-4 col-md-6 mb-4">
+                <label for="Mobile">Mobile</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="mobile"
+                  placeholder=""
+                  required
+                />
+                <input
+                  type="text"
+                  name="userId"
+                  id=""
+                  value="<%=user._id%>"
+                  hidden
+                />
+                <div class="invalid-feedback">PIN code required.</div>
+              </div>
+            </div>
+            <!--Grid row-->
 
-            </form>
+            <div class="d-block my-3">
+              <div>
+                <input value="cod" name="paymentMethod" type="radio" required />
+                <label class="custom-control-label"
+                  >COD(Cash on Delivery)</label
+                >
+              </div>
+              <div>
+                <input
+                  value="credit"
+                  name="paymentMethod"
+                  type="radio"
+                  required
+                />
+                <label class="custom-control-label">Credit card</label>
+              </div>
+              <div>
+                <input
+                  value="debit"
+                  name="paymentMethod"
+                  type="radio"
+                  required
+                />
+                <label class="custom-control-label">Debit card</label>
+              </div>
+              <div id="paypal"></div>
+            </div>
 
-          </div>
-          <!--/.Card-->
-
+            <hr class="mb-4" />
+            <button class="btn btn-dark btn-lg btn-block" type="submit">
+              Continue to checkout
+            </button>
+          </form>
         </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-md-4 mb-4">
-
-          <!-- Heading -->
-          <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-muted">Your cart</span>
-            <span class="badge badge-dark badge-pill text-white">3</span>
-          </h4>
-
-          <!-- Cart -->
-          <ul class="list-group mb-3 z-depth-1">
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Product name</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$12</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Second product</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$8</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">Third item</h6>
-                <small class="text-muted">Brief description</small>
-              </div>
-              <span class="text-muted">$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between bg-light">
-              <div class="text-success">
-                <h6 class="my-0">Promo code</h6>
-                <small>EXAMPLECODE</small>
-              </div>
-              <span class="text-success">-$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Total (INR)</span>
-              <strong>Rs.<%=total[0].total%></strong>
-            </li>
-          </ul>
-          <!-- Cart -->
-
-         
-          <!-- Promo code -->
-
-        </div>
-        <!--Grid column-->
-
+        <!--/.Card-->
       </div>
-      <!--Grid row-->
+      <!--Grid column-->
 
+      <!--Grid column-->
+      <div class="col-md-4 mb-4">
+        <!-- Heading -->
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-muted">Your cart</span>
+          <span class="badge badge-dark badge-pill text-white">3</span>
+        </h4>
+
+        <!-- Cart -->
+        <ul class="list-group mb-3 z-depth-1">
+          <li
+            class="list-group-item d-flex justify-content-between lh-condensed"
+          >
+            <div>
+              <h6 class="my-0">Product name</h6>
+              <small class="text-muted">Brief description</small>
+            </div>
+            <span class="text-muted">$12</span>
+          </li>
+          <li
+            class="list-group-item d-flex justify-content-between lh-condensed"
+          >
+            <div>
+              <h6 class="my-0">Second product</h6>
+              <small class="text-muted">Brief description</small>
+            </div>
+            <span class="text-muted">$8</span>
+          </li>
+          <li
+            class="list-group-item d-flex justify-content-between lh-condensed"
+          >
+            <div>
+              <h6 class="my-0">Third item</h6>
+              <small class="text-muted">Brief description</small>
+            </div>
+            <span class="text-muted">$5</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between bg-light">
+            <div class="text-success">
+              <h6 class="my-0">Promo code</h6>
+              <small>EXAMPLECODE</small>
+            </div>
+            <span class="text-success">-$5</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (INR)</span>
+            <strong>Rs.<%=total[0].total%></strong>
+          </li>
+        </ul>
+        <!-- Cart -->
+
+        <!-- Promo code -->
+      </div>
+      <!--Grid column-->
     </div>
-  </main>
-  <!--Main layout-->
+    <!--Grid row-->
+  </div>
+</main>
+<!--Main layout-->
 
+<script>
+  //////////////////////////////////////////////////////RAZOR-PAY/////////////////////////////////////////////////////////////////////
 
-  <script>
+  let rzp1 = {}
     $("#checkout-form").submit((e)=>{
         e.preventDefault()
         $.ajax({
@@ -163,17 +231,79 @@
             method:'post',
             data:$('#checkout-form').serialize(),
             success:(response)=>{
-                
-                alert(response)
-                if(response.status)
-                {
+                console.log('dsfghdfsagh',response);
+              
+                if(response.codSuccess)
+                {   
+                    console.log('hellooooooooooooooo');
                     location.href='/order-placed'
+                }else{
+                  console.log('helloooo');
+                  console.log(response);
+                 razorpayPayment(response)
                 }
             }
         })
-    })
-  </script>
+   
+
+    function razorpayPayment(order){
+   
+      var options = {
+    "key": "rzp_test_hoUa0LVqQYvuNv", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Nutra-Nation",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id":order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+      console.log('elooooooooooooooooooooooooooooooooooooooo');
+        console.log(response);
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature)
 
 
-  <!--/.Footer-->
-  <%-include('partials/footer')-%>
+        verifyPayment(response,order)
+    },
+    "prefill": {
+        "name": "Goutham A",
+        "email": "gouthamarkl@gmail.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Nutra-Nation Pvt Ltd"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+rzp1 = new Razorpay(options);
+rzp1.open();
+
+ }
+
+function verifyPayment(payment,order){
+  $.ajax({
+    url:'/verify-payment',
+    data:{
+      payment,
+      order
+    },
+    method:'post',
+    success:(response)=>{
+     if(response.status){
+      location.href='/order-placed'
+     }else{
+        alert("payment Failed")
+     }
+    }
+  })
+}
+
+})
+
+</script>
+
+<!--/.Footer-->
+<%-include('partials/footer')-%>

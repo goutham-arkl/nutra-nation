@@ -1,13 +1,157 @@
 <%-include('partials/admin-header')-%>
-
+<div class="container">
 <div class="container">
     <div class="row">
+      <div class="d-flex justify-content-end"> 
+        <div>
+          <a class="btn btn-dark" href="/admin/logout">logout</a>
+        </div>
+      </div>
         <div class="col-9"><h2>ADMIN-HOME</h2></div>
+        
 
-        <a href="/admin/logout">logout</a>
+        <div class="container d-flex justify-content-between">
+
+          <div class="bg-light ms-2 text-center">
+            <h5>users</h5>
+            <span ><%=user%></span>
+
+          </div>
+
+          <div class="bg-light ms-2 text-center">
+            <h5>orders</h5>
+            <span><%=order%></span>
+
+          </div>
+
+          <div class="bg-light ms-2 text-center">
+            <h5>products</h5>
+            <span><%=products%></span>
+
+          </div>
+
+
+        </div>
+
+       
         <div class="col-4"></div>
         <div class="col-6"></div>
       </div>
 </div>
 
+<div class=" d-flex">
+
+  <div class="col-md-6">
+    <canvas id="myChart"></canvas>
+  </div>
+  <div class="col-md-6 ms-4">
+    <canvas id="week"></canvas>
+  </div>
+ 
+  
+</div>
+
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js "></script>
+<script>
+
+
+ fetch('/admin/graphdata',{
+  method:'get',
+ }).then(val=>{
+  return val.json()
+ }).then(data=>{
+  console.log(data.weekXaxis);
+
+
+var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.weekYaxis,
+      // labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      datasets: [{
+        label: '# of Votes',
+        // data: ["2","3","4"],
+        data: data.weekXaxis,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+
+  ///WEEK
+
+  var ctx = document.getElementById("week").getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.MonthYaxis,
+      datasets: [{
+        label: '# of Votes',
+        data: data. MonthXaxis,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+})
+
+  //
+
+</script>
+
+
  <%-include('partials/admin-footer')-%>
+ 

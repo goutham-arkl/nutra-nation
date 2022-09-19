@@ -2,7 +2,7 @@
 
 
 <section>
-  <div class="container">
+  <div class="container mt-5" style="height: 80vh;">
       
       <div class="row">
           <table class="table  table-striped nowrap" id="example">
@@ -23,11 +23,11 @@
                  <%for(i=0;i<orders.length;i++){%>
                   <tr>
                       <th scope="row"><%=i+1%></th>
-                      <td><%=orders[i].date%></td>
+                      <td><%=orders[i].date.toLocaleDateString()%></td>
                       <td><%=orders[i].deliveryDetails.address%></td>
                       <td><%=orders[i].deliveryDetails.pincode%></td>
                       <td><%=orders[i].deliveryDetails.mobile%></td>
-                      <td><%=orders[i].totalAmount[0].total%></td>
+                      <td><%=orders[i].totalAmount%></td>
 
                       <%if(orders[i].status!='Cancelled'){%>
                       <td><span class="text-success font-weight-bold"><%=orders[i].status%></span></td>
@@ -40,9 +40,12 @@
                         
                         </td>
                         <%if(orders[i].status!='Cancelled'){%>
+                          <%if(orders[i].status!='Delivered'){%>
+                          
                         <td><a href="/cancel-order/<%=orders[i]._id%>" class="btn btn-danger">Cancel</a></td>
+                          <%}%>
                           <%}%>  
-                      
+                            
                   </tr>
                   <%}%>
               </tbody>

@@ -6,11 +6,23 @@ var userHelper=require('../helpers/user-helpers');
 const { response } = require('../app');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+
+
+
+
+router.get('/',async function (req, res, next) {
 
   if(req.session.loggedIn){
+
+    let user= await userHelper.getuserCount()
     
-    res.render('admin-home')
+    let order= await userHelper.getorderCount()
+    let products= await userHelper.getproductCount()
+   
+    
+    
+    
+    res.render('admin-home',{user,order,products})
   }
   else{
     res.redirect('admin/login')
@@ -18,6 +30,34 @@ router.get('/', function(req, res, next) {
   
 //  res.render('admin-home')
 });
+router.get('/graphdata',async(req,res)=>{
+
+   let weekWise=await adminHelper.getWeeks()
+    console.log(weekWise);
+    let weekXaxis=[]
+    let weekYaxis=[]
+    for(val of weekWise)
+    {
+      weekXaxis.push(""+val._id)
+      weekYaxis.push(""+val.count)
+    }
+    let MonthWise=await adminHelper.getMonths()
+    console.log(weekWise);
+    let MonthXaxis=[]
+    let MonthYaxis=[]
+    for(val of MonthWise)
+    {
+      MonthXaxis.push(""+val._id)
+      MonthYaxis.push(""+val.count)
+    }
+
+    res.send({weekXaxis,weekYaxis, MonthXaxis, MonthYaxis})
+
+})
+
+
+
+
 router.get('/login',(req,res)=>{
   res.render('admin-login')
 })
@@ -209,7 +249,6 @@ router.post('/add-category',(req,res)=>{
     images.mv('./public/images/catagories/'+id+'.jpg',(err,data)=>{
       if(!err){
         res.redirect("/admin/add-category")
-        console.log("DATA ADDED")
       }
       else{
         console.log(err)
@@ -223,7 +262,7 @@ router.post('/add-category',(req,res)=>{
 
 
 router.get('/add-category',(req,res)=>{
-  console.log('KO');
+ 
   res.render('viewcategories')
 
 })

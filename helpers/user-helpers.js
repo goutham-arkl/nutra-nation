@@ -10,8 +10,14 @@ const Promise=require('promise')
 
 const { response } = require('../app')
 const { reject } = require('promise')
-const { count } = require('console')
+const { count, time } = require('console')
 const { ObjectId } = require('mongodb')
+const Razorpay=require('razorpay')
+
+var instance = new Razorpay({
+    key_id: 'rzp_test_hoUa0LVqQYvuNv',
+    key_secret: 'XDJ38OgMbiMNYxLBKANZ5fXM',
+  });
 
 
 
@@ -99,7 +105,7 @@ module.exports={
             if(userCart)
             {
                 let proExist=userCart.products.findIndex(product=>product.item==proId)
-                console.log(proExist);
+              
                 if(proExist!=-1)
                 {
                    db.get().collection(collections.CART_COLLECTION).updateOne({user:objectId(userId),'products.item':objectId(proId)},
@@ -277,7 +283,7 @@ module.exports={
                 
             ]).toArray()
             
-            console.log(Total);
+           
             resolve(Total)
 
         })
@@ -301,8 +307,8 @@ module.exports={
                 date:new Date()
             }
             db.get().collection(collections.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
-                db.get().collection(collections.CART_COLLECTION).remove({user:objectId(order.userId)})
-                resolve()
+               db.get().collection(collections.CART_COLLECTION).remove({user:objectId(order.userId)})
+                resolve(response.insertedId)
             })
         })
         
@@ -311,14 +317,14 @@ module.exports={
         return new Promise(async(resolve,reject)=>{
             let cart=await db.get().collection(collections.CART_COLLECTION).findOne({user:objectId(userId)})
            
-            console.log(cart.products);
+           
             resolve(cart.products)
         })
     },
     getUserOrders:(userId)=>{
         return new Promise(async(resolve,reject)=>{
             let orders=await db.get().collection(collections.ORDER_COLLECTION).find({userId:objectId(userId)}).toArray()
-            console.log(orders);
+           
             resolve(orders)
         })
         
@@ -359,7 +365,7 @@ module.exports={
         })
     },
     cancelOrder:(orderId)=>{
-        console.log('**');
+       
         console.log(orderId);
         return new Promise((resolve,reject)=>{
             db.get().collection(collections.ORDER_COLLECTION).updateOne({_id:objectId(orderId)},{
@@ -369,12 +375,154 @@ module.exports={
             })
             resolve()
         })
-    }
+    },
+    generateRazorpay:(orderId,total)=>{
+        return new Promise((resolve,reject)=>{
+           
+            var instance = new Razorpay({ key_id: 'rzp_test_hoUa0LVqQYvuNv', key_secret: 'XDJ38OgMbiMNYxLBKANZ5fXM' })
+
+          
+            
+            var options = {
+              amount: total*100,  // amount in the smallest currency unit
+              currency: "INR",
+              receipt: ""+orderId
+            };
+            instance.orders.create(options, function(err, order) {
+              console.log("New order:",order);
+              
+              resolve(order)
+            });
+            
+              
+        })
+    },
+    verifyPayment:(detaills)=>{
+        return new Promise((resolve,reject)=>{
+            const crypto = require('crypto')
+            let hmac = crypto.createHmac('sha256' , 'XDJ38OgMbiMNYxLBKANZ5fXM');
+            hmac.update(detaills['payment[razorpay_order_id]']+'|'+detaills['payment[razorpay_payment_id]']);
+            hmac=hmac.digest('hex')
+            if(hmac==detaills['payment[razorpay_signature]']){
+                resolve()
+            }else{
+                reject()
+            }
+        })
+    },
+    changePaymentStatus:(orderId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.ORDER_COLLECTION).updateOne({_id:objectId(orderId)},
+            {
+                $set:{
+                    status:'placed'
+                }
+            }
+            
+            ).then(()=>{
+                resolve()
+            })
+        })
+    },
+    addAddress:(address,userId)=>{
+
+        let AddressObject={
+            Address:address,
+        }
+        return new Promise((resolve,reject)=>{
+
+
+         
+                
+            
+            let useraddress=db.get().collection(collections.ADDRESS_COLLECTION).find({user:objectId(userId)})
+            
+            console.log('here');
+
+             if(useraddress!=null){
+
+                db.get().collection(collections.ADDRESS_COLLECTION).updateOne({user:objectId(userId)},
+                {
+                    $push:{Address:address}
+                })
+                console.log('Evde evde');
+
+
+             }
+             else
+             {
+                
+                  let addressObj={
+                    user:objectId(userId),
+                    Address:[AddressObject]
+                  }
+
+                db.get().collection(collections.ADDRESS_COLLECTION).insertOne(addressObj)
+                console.log('eloooo');
+                
+             }
+             resolve()
+        })
+    },
+    getaddress:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            console.log(userId);
+            let address=await db.get().collection(collections.ADDRESS_COLLECTION).findOne({user:objectId(userId)})
+            console.log(address.Address);
+            resolve(address.Address)
+
+          
+            
+
+        })
+    },
+    getuserCount:()=>{
+        return new Promise(async(resolve,reject)=>{
+            
+            let userCount=await db.get().collection(collections.USER_COLLECTION).count()
+           
+            resolve(userCount)
+         }) 
+        },
+
+        getorderCount:()=>{
+            return new Promise(async(resolve,reject)=>{
+                
+                let orderCount=await db.get().collection(collections.ORDER_COLLECTION).count()
+                
+               
+                resolve(orderCount)
+             }) 
+        },
+
+        getproductCount:()=>{
+            return new Promise(async(resolve,reject)=>{
+                
+                let productsCount=await db.get().collection(collections.PRODUCT_COLLECTION).count()
+               
+                resolve(productsCount)
+             }) 
+        },
+
+        deliveredOrders:(userId)=>{
+            return new Promise(async(resolve,reject)=>{
+
+                let orders=await db.get().collection(collections.ORDER_COLLECTION).find({ userId: objectId(userId),status:"Delivered"}).limit(5).toArray()
+
+               
+                resolve(orders)
+            })
+        }
+
+
+
+
    
 
        
-       
 }
        
-         
-    
+
+
+
+

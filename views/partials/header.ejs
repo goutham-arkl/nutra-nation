@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- PAYPAL -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ATjsx_kwSLCfA8f-zg2wHhIJRHSuilLl2SdnjonlfkWFLAHpeJEmKeFEIjCOZoqS2xxdpmdN357r1SkD&currency=INR"></script>
+
     <script
     type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.4.0/mdb.min.js"
@@ -93,34 +98,7 @@ rel="stylesheet"
                <i class="fas fa-shopping-cart">  <span class="badge rounded-pill badge-notification bg-danger"><%=cartCount%></span></i>
              </a>
        
-             <!-- Notifications -->
-             <div class="dropdown my-auto">
-               <a
-                 class="link-grayish me-3 dropdown-toggle hidden-arrow"
-                 href="#"
-                 id="navbarDropdownMenuLink"
-                 role="button"
-                 data-mdb-toggle="dropdown"
-                 aria-expanded="false"
-               >
-                 <i class="fas fa-bell"></i>
-               
-               </a>
-               <ul
-                 class="dropdown-menu dropdown-menu-end"
-                 aria-labelledby="navbarDropdownMenuLink"
-               >
-                 <li>
-                   <a class="dropdown-item" href="#">Some news</a>
-                 </li>
-                 <li>
-                   <a class="dropdown-item" href="#">Another news</a>
-                 </li>
-                 <li>
-                   <a class="dropdown-item" href="#">Something else here</a>
-                 </li>
-               </ul>
-             </div>
+            
              <!-- Avatar -->
              <div class="dropdown my-auto">
                <a
@@ -146,11 +124,9 @@ rel="stylesheet"
                >
                <%if(user){%>
                  <li>
-                   <a class="dropdown-item" href="#"><%=user%></a>
+                   <a class="dropdown-item" href="/view-profile"><%=user%></a>
                  </li>
-                 <li>
-                  <a class="dropdown-item" href="#">Settings</a>
-                </li>
+                 
                 
                 <li>
                   <a class="dropdown-item" href="/logout">Logout</a>
