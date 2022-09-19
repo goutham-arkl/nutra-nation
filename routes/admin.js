@@ -33,7 +33,7 @@ router.get('/',async function (req, res, next) {
 router.get('/graphdata',async(req,res)=>{
 
    let weekWise=await adminHelper.getWeeks()
-    console.log(weekWise);
+   
     let weekXaxis=[]
     let weekYaxis=[]
     for(val of weekWise)
@@ -42,7 +42,7 @@ router.get('/graphdata',async(req,res)=>{
       weekYaxis.push(""+val.count)
     }
     let MonthWise=await adminHelper.getMonths()
-    console.log(weekWise);
+    
     let MonthXaxis=[]
     let MonthYaxis=[]
     for(val of MonthWise)
@@ -50,6 +50,7 @@ router.get('/graphdata',async(req,res)=>{
       MonthXaxis.push(""+val._id)
       MonthYaxis.push(""+val.count)
     }
+    // let YearWise=await adminHelper.getYears()
 
     res.send({weekXaxis,weekYaxis, MonthXaxis, MonthYaxis})
 
@@ -106,7 +107,7 @@ router.get('/add-users',(req,res)=>{
 })
 
 router.get('/edit-user',async(req,res)=>{
-  console.log("ok");
+  
  let userId=req.query.id
   console.log(userId);
 let user=await adminHelper.getUserDetails(userId).then((user)=>{
@@ -117,7 +118,7 @@ let user=await adminHelper.getUserDetails(userId).then((user)=>{
 
 router.post('/update-user',(req,res)=>{
 
- let userId=req.query.id
+ 
   
   console.log(userId);
   adminHelper.updateUser(userId,req.body).then(()=>{

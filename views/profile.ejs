@@ -12,10 +12,64 @@
               <h5 class="my-3"><%=user.name%></h5>
               
               <div class="d-flex justify-content-center mb-2">
-                <a class="btn btn-primary" href="/edit-profile">Edit Profile</a>
+                <a class="btn btn-primary" href="" data-toggle="modal" data-target="#modalRegisterForm">Edit Profile</a>
               </div>
             </div>
           </div>
+
+
+          <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Update Profile</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <form action="/update-user" id="form"  method="post">
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+            <i class="fas fa-user prefix grey-text"></i>
+            <label data-error="wrong" data-success="right" for="orangeForm-name">Name</label>
+            
+          <input type="text" name="name" value="<%=user.name%>" class="form-control validate">
+        </div>
+        <div class="md-form mb-5">
+            <i class="fas fa-user prefix grey-text"></i>
+            <label data-error="wrong" data-success="right" for="orangeForm-name">Username</label>
+            
+          <input type="text" name="username" value="<%=user.username%>" class="form-control validate">
+        </div>
+        <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="orangeForm-email">Email</label>
+
+          <input type="email"  name="email" value="<%=user.email%>" class="form-control validate">
+        </div>
+
+        <div class="md-form mb-4">
+          <i class="fas fa-mobile prefix grey-text"></i>
+          <label data-error="wrong" data-success="right" for="orangeForm-pass">Mobile</label>
+
+          <input  type="number" value="<%=user.phone%>" name="phone" class="form-control validate">
+        </div>
+
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="submit" class="btn btn-dark">SAVE</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+
+      
+
+
           <div class="card mb-4 mb-lg-0">
             <div class="card-body p-0">
               <ul class="list-group list-group-flush rounded-3">

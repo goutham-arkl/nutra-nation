@@ -26,11 +26,14 @@ router.get("/", async function (req, res) {
   productHelpers.viewCategory().then(async (category) => {
     let cartCount = 0;
     console.log("cartcout");
-    console.log(req.session.user);
+    
 
     if (req.session.user) {
-      let user = req.session.user;
-      console.log(user);
+      let userId=req.session.user._id
+      let userDetails=await adminHelpers.getUserDetails(userId)
+
+      let user = req.session.user=userDetails
+   
       let cartCount = await userHelper.getCartCount(user._id);
 
       res.render("home", { user: req.session.user.name, category, cartCount });
@@ -240,15 +243,29 @@ router.post("/change-product-quantity", (req, res, next) => {
 router.get("/proceedToPay", verifyLogin, async (req, res) => {
   let cartCount = null;
 
-  let address = await userHelper.getaddress(req.session.user._id);
-  await userHelper.getTotalAmount(req.session.user._id).then((total) => {
-    res.render("place-order", {
-      cartCount,
-      user: req.session.user,
-      total,
-      address,
+  let address = await userHelper.getaddress(req.session.user._id)
+  if(address){
+    await userHelper.getTotalAmount(req.session.user._id).then((total) => {
+      res.render("place-order", {
+        cartCount,
+        user: req.session.user,
+        total,
+        address,
+      });
     });
-  });
+
+  }else{
+    await userHelper.getTotalAmount(req.session.user._id).then((total) => {
+      res.render("place-order", {
+        cartCount,
+        user: req.session.user,
+        total,
+        address,
+       
+      });
+    });
+  }
+ 
 });
 
 router.post("/place-order", async (req, res) => {
@@ -271,7 +288,8 @@ router.post("/place-order", async (req, res) => {
 
 router.post("/add-address", (req, res) => {
   let userId = req.session.user._id;
-  console.log(userId);
+  
+  console.log(req.body);
   userHelper.addAddress(req.body, userId);
   res.redirect("/proceedToPay");
 });
@@ -315,6 +333,24 @@ router.post("/verify-payment", (req, res) => {
       });
   });
 });
+
+
+
+router.post('/update-user',(req,res)=>{
+
+  let userId=req.session.user._id
+  console.log(userId);
+  console.log(req.body);
+  adminHelpers.updateUser(userId,req.body).then(()=>{
+    console.log("ook");
+  
+
+    res.redirect('/')
+  })
+    
+  })
+
+
 ///////////////////////////////PAYPAL///////////////////////////////////////
 
 const { CLIENT_ID, APP_SECRET } = process.env;

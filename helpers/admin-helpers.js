@@ -228,8 +228,41 @@ module.exports={
             ]).toArray()
             resolve(month)
         })
-    }
+    },
+    // getYears: () => {
+    //     return new Promise(async (resolve, reject) => {
+    //         let year = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+    //             {
+    //                 $match: {
+    //                     date: {
+    //                         $gte: new Date(new Date().getYears()-10)
+    //                     },
+    //                 }
+    //             },
+    //             {
+    //                 $project: {
+    //                     date: '$date',
+    //                     year: { $year: "$date" },
+    //                 },
+    //             },
+    //             {
+    //                 $group: {
+    //                     _id: "$year",
+    //                     count: { $sum: 1 },
+    //                 }
+    //             },
+    //             {
+    //                 $sort: {
+    //                     _id: 1
+    //                 }
+    //             },
 
+    //         ]).toArray()
+    //         console.log('***********',year);
+    //         resolve(year)
+    //     })
+
+    // }
 }
 
 

@@ -59,7 +59,7 @@ module.exports={
                    
                     else  if(status){
                         
-                        console.log('Login success');
+                        
                         response.user=user
                         response.status=true
                         
@@ -67,7 +67,7 @@ module.exports={
                         
                     }
                     else{
-                         console.log('login failed');
+                         
                         response.status=false
                         resolve(response)
                     }
@@ -77,7 +77,7 @@ module.exports={
            
             else{
                 
-                console.log('Login failed');
+                
                 resolve({status:false})
             }
         })
@@ -426,20 +426,18 @@ module.exports={
     },
     addAddress:(address,userId)=>{
 
-        let AddressObject={
-            Address:address,
-        }
-        return new Promise((resolve,reject)=>{
+        
+        return new Promise(async(resolve,reject)=>{
 
 
          
                 
             
-            let useraddress=db.get().collection(collections.ADDRESS_COLLECTION).find({user:objectId(userId)})
+            let useraddress=await db.get().collection(collections.ADDRESS_COLLECTION).findOne({user:objectId(userId)})
             
-            console.log('here');
+            console.log('here',useraddress);
 
-             if(useraddress!=null){
+             if(useraddress.Address!=null){
 
                 db.get().collection(collections.ADDRESS_COLLECTION).updateOne({user:objectId(userId)},
                 {
@@ -454,7 +452,7 @@ module.exports={
                 
                   let addressObj={
                     user:objectId(userId),
-                    Address:[AddressObject]
+                    Address:[address]
                   }
 
                 db.get().collection(collections.ADDRESS_COLLECTION).insertOne(addressObj)
@@ -466,10 +464,18 @@ module.exports={
     },
     getaddress:(userId)=>{
         return new Promise(async(resolve,reject)=>{
-            console.log(userId);
+          
             let address=await db.get().collection(collections.ADDRESS_COLLECTION).findOne({user:objectId(userId)})
-            console.log(address.Address);
+           
+            if(address!=null)
+            {
+                console.log(address.Address);
             resolve(address.Address)
+            }
+            else
+            {
+              resolve(address)
+            }
 
           
             
@@ -512,7 +518,8 @@ module.exports={
                
                 resolve(orders)
             })
-        }
+        },
+        
 
 
 

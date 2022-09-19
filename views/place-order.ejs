@@ -81,9 +81,14 @@
                     aria-labelledby="ex2-tab-2"
                   >
                   <form action="/place-order" id="checkout-form" method="post">
+                   <%if(address){%>
                     <%for(i=0;i<address.length;i++){%>
                       <input type="radio" value="<%=address[i].address%>" name="address"><%=address[i].address%> <br>
                       <%}%>
+                    <%}else{%>
+                      <span>No saved address</span>
+                      <%}%>
+
                   </div>
                 </div>
               </div>
