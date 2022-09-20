@@ -95,13 +95,13 @@ router.get("/otp-login", (req, res) => {
   res.render("otp-login");
 });
 
-router.post("/otp-login", (req, res) => {
+router.post("/otp-login",async (req, res) => {
   let number = req.body;
 
-  let user = adminHelpers.getUserbynumber(number);
+  // let user = await adminHelpers.getUserbynumber(number);
 
-  console.log(user);
-  console.log("success");
+  // console.log(user);
+  // console.log("success");
   client.verify
     .services(serviceSID)
     .verifications.create({

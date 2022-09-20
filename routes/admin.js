@@ -50,9 +50,22 @@ router.get('/graphdata',async(req,res)=>{
       MonthXaxis.push(""+val._id)
       MonthYaxis.push(""+val.count)
     }
-    // let YearWise=await adminHelper.getYears()
 
-    res.send({weekXaxis,weekYaxis, MonthXaxis, MonthYaxis})
+    let yearWise=await adminHelper.getYears()
+    
+    let yearXaxis=[]
+    let yearYaxis=[]
+    for(val of yearWise)
+    {
+      yearXaxis.push(val._id)
+      yearYaxis.push(val.count)
+    }
+    console.log('------------');
+    console.log(yearXaxis);
+    console.log(yearYaxis);
+
+
+    res.send({weekXaxis,weekYaxis, MonthXaxis, MonthYaxis, yearXaxis, yearYaxis})
 
 })
 

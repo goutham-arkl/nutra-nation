@@ -435,7 +435,7 @@ module.exports={
             
             let useraddress=await db.get().collection(collections.ADDRESS_COLLECTION).findOne({user:objectId(userId)})
             
-            console.log('here',useraddress);
+           
 
              if(useraddress.Address!=null){
 
@@ -443,7 +443,7 @@ module.exports={
                 {
                     $push:{Address:address}
                 })
-                console.log('Evde evde');
+          
 
 
              }
@@ -456,7 +456,7 @@ module.exports={
                   }
 
                 db.get().collection(collections.ADDRESS_COLLECTION).insertOne(addressObj)
-                console.log('eloooo');
+              
                 
              }
              resolve()
