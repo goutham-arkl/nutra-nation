@@ -13,7 +13,7 @@ module.exports={
         return new Promise(async(resolve,reject)=>{
             let loginStatus=false
             let response={}
-            console.log('*********************');
+      
             let user= await db.get().collection(collection.ADMIN_COLLECTION).findOne({username:userData.username})
             
 
@@ -144,7 +144,7 @@ module.exports={
     },
     getUserOrders:()=>{
         return new Promise(async(resolve,reject)=>{
-            let orders=await db.get().collection(collections.ORDER_COLLECTION).find().toArray()
+            let orders=await db.get().collection(collections.ORDER_COLLECTION).find().sort({date:-1}).toArray()
             
             resolve(orders)
         })
@@ -260,7 +260,33 @@ module.exports={
             ]).toArray()
             resolve(year)
         })
+    },
+    addBanner:(banner,callback)=>{
+       
+        
+        db.get().collection(collections.BANNER_COLLECTION).insertOne(banner).then((data)=>{
+            callback(data.insertedId)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    },
+    getBanners:()=>{
+        return new Promise(async(resolve,reject)=>{
+           let banner=await db.get().collection(collections.BANNER_COLLECTION).find().toArray()
+           resolve(banner)
+        })
+    },
+    addCoupon:(couponDetails)=>{
+        return new Promise(async(resolve,reject)=>{
+            couponDetails.isValid=true
+            db.get().collection(collections.COUPON_COLLECTION).insertOne(couponDetails).then(()=>{
+
+                resolve()
+            })
+          
+        })
     }
+
 }
 
 

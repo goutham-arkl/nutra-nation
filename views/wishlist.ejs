@@ -1,6 +1,45 @@
 <%-include('partials/header')-%>
+    <div class="container ">
+        <div class="row" style="height: 80vh;">
+
+            <%for(i=0;i<products.length;i++){%>
+
+                <div class="col-6 col-md-4 col-lg-3 col-xl-3 mt-4">
 
 
 
 
-<%-include('partials/footer')-%>
+                    <div class="card" style="width: 18rem; overflow: hidden;">
+                        <div style="overflow: hidden;">
+                            <a> <img style=" height: 30vh;" src="/images/products/<%=products[i].product._id%>.jpg"
+                                    class="card-img-top zoom-product" alt="..."></a>
+                        </div>
+                        <div class="card-body ">
+
+                            <p class="card-text element text-uppercase font-weight-bold  ">
+                                <%=products[i].product.name%>
+                            </p>
+                            <p class="card-text element font-weight-light">Rs <%=products[i].product.description%>
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <p class="card-text  font-weight-bold  ">Rs. <%=products[i].product.price%>
+                                </p>
+                                <button class="btn btn-dark" onclick="addToCart('<%=products[i].product._id%>')">ADD TO CART</button>
+                            </div>
+
+
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <%}%>
+
+
+
+        </div>
+    </div>
+    <%-include('partials/footer')-%>

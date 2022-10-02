@@ -9,26 +9,39 @@
       </div>
         <div class="col-9"><h2>ADMIN-HOME</h2></div>
         
+        
 
-        <div class="container d-flex justify-content-between">
+        <div class="container d-flex justify-content-between" id="reportPage">
 
-          <div class="bg-light ms-2 text-center">
-            <h5>users</h5>
-            <span ><%=user%></span>
+        
 
+          <div class="col-md-4 card  " style=" background-color: #E0E0E0;box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
+            <div class=" ms-2 text-center">
+              <h5>Orders</h5>
+              <span><%=order%></span>
+  
+            </div>
+           
           </div>
-
-          <div class="bg-light ms-2 text-center">
-            <h5>orders</h5>
-            <span><%=order%></span>
-
+          <div class="col-md-4 card ms-2  " style=" background-color: #E0E0E0;box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
+            <div class=" ms-2 text-center">
+              <h5>Users</h5>
+              <span><%=user%></span>
+  
+            </div>
+           
           </div>
+       
 
-          <div class="bg-light ms-2 text-center">
-            <h5>products</h5>
-            <span><%=products%></span>
-
+          <div class="col-md-4 card ms-2 " style="background-color: #E0E0E0; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
+            <div class=" text-center">
+              <h5>products</h5>
+              <span><%=products%></span>
+  
+            </div>
+           
           </div>
+        
 
 
         </div>
@@ -39,15 +52,23 @@
       </div>
 </div>
 
-<div class=" d-flex">
+<div class=" d-flex justify-content-between mt-4">
 
-  <div class="col-md-6">
-    <h2>DayWise:</h2>
-    <canvas id="myChart"></canvas>
+  <div class=" col-6 card  bg-light " style="background-color: #E0E0E0 !important; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
+    <div class="col">
+      <h2>DayWise:</h2>
+      <canvas id="myChart"></canvas>
+    </div>
+
   </div>
-  <div class="col-md-6 ms-4">
-    <h2>WeekWise:</h2>
-    <canvas id="week"></canvas>
+  <div class=" col-6 card  bg-light ms-4 " style="background-color:#E0E0E0 !important; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
+    <div class=" ms-4">
+      <h2>WeekWise:</h2>
+      <canvas id="week"></canvas>
+    </div>
+    <div class="card-img-overlay">
+      
+    </div>
   </div>
  
   
@@ -56,20 +77,24 @@
 
 <div class="container">
   <!--Grid row-->
-<div class="row d-flex justify-content-center mt-5">
+<div class="row d-flex  mt-4 mb-5">
+  
 
   <!--Grid column-->
-  <div class="col-md-10">
-    <h2>YearWise:</h2>
-
-    <canvas id="year"></canvas>
-
+  <div class="col-12 card  bg-light " style="background-color:#E0E0E0 !important; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
+    <div class="col-md-10">
+      <h2>YearWise:</h2>
+  
+      <canvas id="year"></canvas>
+  
+    </div>
   </div>
   <!--Grid column-->
 
 </div>
 <!--Grid row-->
 </div>
+<a href="#" id="downloadPdf">Download Report Page as PDF</a>
 
 
 </div>
@@ -209,6 +234,48 @@ var ctx = document.getElementById("myChart").getContext('2d');
 })
 
   //
+  $('#downloadPdf').click(function(event) {
+  // get size of report page
+  var reportPageHeight = $('#reportPage').innerHeight();
+  var reportPageWidth = $('#reportPage').innerWidth();
+  
+  // create a new canvas object that we will populate with all other canvas objects
+  var pdfCanvas = $('<canvas />').attr({
+    id: "canvaspdf",
+    width: reportPageWidth,
+    height: reportPageHeight
+  });
+  
+  // keep track canvas position
+  var pdfctx = $(pdfCanvas)[0].getContext('2d');
+  var pdfctxX = 0;
+  var pdfctxY = 0;
+  var buffer = 100;
+  
+  // for each chart.js chart
+  $("canvas").each(function(index) {
+    // get the chart height/width
+    var canvasHeight = $(this).innerHeight();
+    var canvasWidth = $(this).innerWidth();
+    
+    // draw the chart into the new canvas
+    pdfctx.drawImage($(this)[0], pdfctxX, pdfctxY, canvasWidth, canvasHeight);
+    pdfctxX += canvasWidth + buffer;
+    
+    // our report page is in a grid pattern so replicate that in the new canvas
+    if (index % 2 === 1) {
+      pdfctxX = 0;
+      pdfctxY += canvasHeight + buffer;
+    }
+  });
+  
+  // create new pdf and add our new canvas as an image
+  var pdf = new jsPDF('l', 'pt', [reportPageWidth, reportPageHeight]);
+  pdf.addImage($(pdfCanvas)[0], 'PNG', 0, 0);
+  
+  // download the pdf
+  pdf.save('filename.pdf');
+});
 
 </script>
 

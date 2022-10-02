@@ -1,137 +1,159 @@
 const { promiseImpl } = require('ejs')
 const { response } = require('../app')
 const collections = require('../config/collections')
-var db=require('../config/connection')
-const Promise=require('promise')
+var db = require('../config/connection')
+const Promise = require('promise')
 const { resolve } = require('promise')
-var objectId=require('mongodb').ObjectId
-module.exports={
-    
+var objectId = require('mongodb').ObjectId
+module.exports = {
 
-    addproduct:(product,callback)=>{
-       
-        
-        db.get().collection(collections.PRODUCT_COLLECTION).insertOne(product).then((data)=>{
+
+    addproduct: (product, callback) => {
+
+
+        db.get().collection(collections.PRODUCT_COLLECTION).insertOne(product).then((data) => {
             callback(data.insertedId)
-        }).catch((err)=>{
+        }).catch((err) => {
             console.log(err)
         })
     },
-    addcategory:(category,callback)=>{
-        
-     let  categoryExist=db.get().collection(collections.CATEGORY_COLLECTION).find(category)
-        if(categoryExist)
-        {   console.log('category Exist');
-            resolve(err='category already exist')
-        }
-        else{
-            db.get().collection(collections.CATEGORY_COLLECTION).insertOne(category).then((data)=>{
-                callback(data.insertedId)
-            }).catch((err)=>{
-                console.log(err);
-            })
+    addcategory: (category, callback) => {
+        let categoryExist = false
 
-        }
+        db.get().collection(collections.CATEGORY_COLLECTION).find().toArray().then((categories) => {
 
-        
-    },
+           
 
-    viewproducts:()=>{ 
-        return new Promise((resolve,reject)=>{
-         let  products= db.get().collection(collections.PRODUCT_COLLECTION).find().toArray()
+            for (i = 0; i < categories.length; i++) {
+                let upper = categories[i].name + ""
                 
-                if(products)
-                {
-                    console.log('Data fetched');
-                    resolve(products)
-                }
-                else{
-                    console.log('failed');
+                let Upper = upper.toUpperCase()
+   
 
+                if (category == Upper) {
+                    categoryExist = true
+                   
                 }
-            
+
+            }
+            if (categoryExist) {
+                console.log('category Exist');
+               let err="exist"
+               
+               callback(err)
+            }
+            else {
+                db.get().collection(collections.CATEGORY_COLLECTION).insertOne(category).then((data) => {
+                    callback(data.insertedId)
+                }).catch((err) => {
+                    console.log(err);
+                })
+
+            }
         })
-        
+
     },
-    deleteproduct:(proId)=>{
-        return new Promise(async(resolve,reject)=>{
-            await db.get().collection(collections.PRODUCT_COLLECTION).remove({_id:objectId(proId)}).then((response)=>{
+
+    viewproducts: () => {
+        return new Promise((resolve, reject) => {
+            let products = db.get().collection(collections.PRODUCT_COLLECTION).find().toArray()
+
+            if (products) {
+                console.log('Data fetched');
+                resolve(products)
+            }
+            else {
+                console.log('failed');
+
+            }
+
+        })
+
+    },
+    deleteproduct: (proId) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(collections.PRODUCT_COLLECTION).remove({ _id: objectId(proId) }).then((response) => {
                 resolve(response)
             })
         })
     },
-    viewCategory:()=>{
-        return new Promise((resolve,reject)=>{
-             db.get().collection(collections.CATEGORY_COLLECTION).find().toArray().then((categories)=>{
+    viewCategory: () => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.CATEGORY_COLLECTION).find().toArray().then((categories) => {
 
-                
+
                 resolve(categories)
-            }).catch((err)=>{
+            }).catch((err) => {
                 reject(err)
             })
         })
     },
 
-    deleteCategory:(categoryId)=>{
-        return new Promise(async(resolve,reject)=>{
-            await db.get().collection(collections.CATEGORY_COLLECTION).remove({_id:objectId(categoryId)}).then((category)=>{
+    deleteCategory: (categoryId) => {
+        return new Promise(async (resolve, reject) => {
+            await db.get().collection(collections.CATEGORY_COLLECTION).remove({ _id: objectId(categoryId) }).then((category) => {
                 resolve(category)
             })
         })
     },
-    getCategoryDetails:(categoryId)=>{
+    getCategoryDetails: (categoryId) => {
 
-        return new Promise((resolve,reject)=>{
-            db.get().collection(collections.CATEGORY_COLLECTION).findOne({_id:objectId(categoryId)}).then((category)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.CATEGORY_COLLECTION).findOne({ _id: objectId(categoryId) }).then((category) => {
                 resolve(category)
             })
         })
 
     },
-    updateCategory:(categoryId,categoryDetails)=>{
+    updateCategory: (categoryId, categoryDetails) => {
 
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             console.log(categoryDetails);
-            
-            db.get().collection(collections.CATEGORY_COLLECTION).updateOne({_id:objectId(categoryId)},{
-                $set:{
-                    name:categoryDetails.name,
-                    description:categoryDetails.description
+
+            db.get().collection(collections.CATEGORY_COLLECTION).updateOne({ _id: objectId(categoryId) }, {
+                $set: {
+                    name: categoryDetails.name,
+                    description: categoryDetails.description
                 }
-            }).then((response)=>{
+            }).then((response) => {
                 console.log(response)
                 resolve()
             })
         })
     },
-    getProductDetails:(proId)=>{
-        return new Promise((resolve,reject)=>{
-           db.get().collection(collections.PRODUCT_COLLECTION).findOne({_id:objectId(proId)}).then((product)=>{
-            console.log(product);
-            resolve(product)
-           })
+    getProductDetails: (proId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.PRODUCT_COLLECTION).findOne({ _id: objectId(proId) }).then((product) => {
+                console.log(product);
+                if(product){
+                    resolve(product)
+                }else{
+                    reject(err)
+                }
+                
+            })
         })
     },
-    updateProduct:(proId,proDetails)=>{
-        return new Promise((resolve,reject)=>{
-           
-            db.get().collection(collections.PRODUCT_COLLECTION).updateOne({_id:objectId(proId)},
-            
-            
-            {
-                $set:{
-                     name:proDetails.name,
-                     description:proDetails.description,
-                     category:proDetails.category,
-                     price:proDetails.price
+    updateProduct: (proId, proDetails) => {
+        return new Promise((resolve, reject) => {
+
+            db.get().collection(collections.PRODUCT_COLLECTION).updateOne({ _id: objectId(proId) },
+
+
+                {
+                    $set: {
+                        name: proDetails.name,
+                        description: proDetails.description,
+                        category: proDetails.category,
+                        price: proDetails.price
                     }
-            }
-            ).then(()=>{
-                console.log('kjkbhvhngb')
+                }
+            ).then(() => {
                 resolve()
             })
-        }).catch((err)=>{
+        }).catch((err) => {
             console.log(err);
         })
-    }
+    },
+
 }

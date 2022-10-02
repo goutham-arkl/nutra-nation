@@ -8,8 +8,11 @@
     <div class="col">
         <section>
             <div class="mt-3">
+              <%if(err){%>
+                <span class="text-success font-weight-bold">Category Already Exist</span>
+                <%}%>
 
-                <form action="/admin/add-category" enctype="multipart/form-data" id="form" method="post">
+                <form action="/admin/submit-category" enctype="multipart/form-data" id="form" method="post">
                     <!-- Name input -->
                     <div class="form-outline mb-4">
                       <input type="text" id="form4Example1" name="name" class="form-control" />

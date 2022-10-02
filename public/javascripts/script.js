@@ -1,18 +1,75 @@
 
 function addToCart(proId){
+
   $.ajax({
+    
       url:'/add-to-cart/'+proId,
       method:'get',
       success:(response)=>{
+        console.log(response);
         if(response.status)
           alert(response)
       }
   })
 }
+
+function addToWishlist(proId){
+  console.log(proId);
+  $.ajax({
+    
+      url:'/add-to-wishlist/'+proId,
+      method:'get',
+      success:(response)=>{
+        console.log(response);
+        if(response.status)
+          alert(response)
+      }
+  })
+}
+
 $("#click-me").click(function(){
     $("#div1").toggle();
   }); 
+  //////////////////coupon////////////////////////////
 
+  function addCoupon() {
+        let couponName = document.querySelector("input[name='name']").value
+       
+        let total = document.querySelector("input[name='total']").value
+        console.log(total);
+       
+        $.ajax({
+            url: '/apply-coupon',
+            data: {
+                name: couponName,
+                total: total
+            },
+            method: 'post',
+            success: (response) => { 
+
+                if (response.total) {
+                  console.log(response.total);
+                  let value=response.total
+                  $('#totalA').html(value)
+                  
+
+                    // errorCoupon.innerHTML = ""
+                    // document.getElementById('totalA').innerText = response.total
+                } else if (response.noCoupon) {
+                    errorCoupon.innerHTML = "No Coupon"
+                    let value=response.noCoupon
+                  $('#err').html(value)
+                    // document.getElementById('totalAmount').innerText = response.Total
+                }
+                else {
+                    
+                    errorCoupon.innerHTML = "Coupon Not Available"
+                }
+
+            }
+        })
+
+    }
   //////////////////////////////////////////////////////RAZOR-PAY/////////////////////////////////////////////////////////////////////
 
 //   let rzp1 = {}
@@ -96,34 +153,5 @@ $("#click-me").click(function(){
 // })
 
 
-  ////////////////////////////////////////////////////////////PAYPAL/////////////////////////////////////////////////////////////////////////////// 
 
-  paypal.Buttons({
-    // Order is created on the server and the order id is returned
-    createOrder: (data, actions) => {
-      return fetch("/api/orders", {
-        method: "post",
-        // use the "body" param to optionally pass additional order information
-        // like product ids or amount
-      })
-      .then((response) => response.json())
-      .then((order) => order.id);
-    },
-    // Finalize the transaction on the server after payer approval
-    onApprove: (data, actions) => {
-      return fetch(`/api/orders/${data.orderID}/capture`, {
-        method: "post",
-      })
-      .then((response) => response.json())
-      .then((orderData) => {
-        // Successful capture! For dev/demo purposes:
-        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-        const transaction = orderData.purchase_units[0].payments.captures[0];
-        alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
-        // When ready to go live, remove the alert and show a success message within this page. For example:
-        // const element = document.getElementById('paypal-button-container');
-        // element.innerHTML = '<h3>Thank you for your payment!</h3>';
-        // Or go to another URL:  actions.redirect('thank_you.html');
-      });
-    }
-  }).render('#paypal');
+  

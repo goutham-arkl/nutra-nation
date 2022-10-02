@@ -31,35 +31,42 @@
           </div>
       </div>
       <div class="row">
-          <table class="table table-striped nowrap" id="form">
-              <thead>
-                  <tr>
-                      <th scope="col">No</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Category</th>
-                      <th scope="col">Image</th>
-                      <th scope="col">Actions</th>
-                     
-                  </tr>
-              </thead>
-              <tbody>
-                 <%for(i=0;i<products.length;i++){%>
-                  <tr>
-                      <th scope="row"><%=i+1%></th>
-                      <td><%=products[i].name%></td>
-                      <td><%=products[i].category%></td>
-                      <td>
-                        <img style="width: 50px;height: 50px;" src="/images/products/<%=products[i]._id%>.jpg" alt="image">
-                    </td>
-                      <td><a href="/admin/edit-product?id=<%=products[i]._id%>" class="btn btn-primary">Edit</a>
-                        <a href="/admin/delete-product?id=<%=products[i]._id%>" class="btn btn-danger"
-                            onclick="return confirm('Are you sure you want to delete')">Delete</a></td>
+
+        <div class="col-12 card mb-4  bg-light  d-flex align-items-center " style="background-color:#E0E0E0 !important; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
+            <div class="col-md-10 mt-4 mb-2">
+              
+                <table class="table table-striped nowrap" id="form">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Actions</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                       <%for(i=0;i<products.length;i++){%>
+                        <tr>
+                            <th scope="row"><%=i+1%></th>
+                            <td><%=products[i].name%></td>
+                            <td><%=products[i].category%></td>
+                            <td>
+                              <img style="width: 50px;height: 50px;" src="/images/products/<%=products[i]._id%>.jpg" alt="image">
+                          </td>
+                            <td><a href="/admin/edit-product?id=<%=products[i]._id%>" class="btn btn-primary">Edit</a>
+                              <a href="/admin/delete-product?id=<%=products[i]._id%>" class="btn btn-danger"
+                                  onclick="return confirm('Are you sure you want to delete')">Delete</a></td>
+                                  
                             
-                      
-                  </tr>
-                  <%}%>
-              </tbody>
-          </table>
+                        </tr>
+                        <%}%>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+          
       </div>
 
   </div>

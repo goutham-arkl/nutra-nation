@@ -2,59 +2,59 @@
 <%-include('partials/admin-header')-%>
 
 
-<section>
-  <div class="container">
+<section >
+  <div class="container " >
       <div class="row">
-          <div class="container d-flex justify-content-end mt-2 mb-5">
-             
-              <a class="btn btn-success" href="/admin/add-users" role="button">
-                  
-                  Add Users
-              </a>
-          </div>
+         
         
       <div class="row">
-        <table id="form" class="table table-striped nowrap" style="width:100%" >
-            <thead>
-                <tr>
-                    <th scope="col">No.</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%for(i=0;i<users.length;i++){%>
-                <tr>
-                    <td><%=i+1%></td>
-                    <td><%=users[i].name%></td>
-                    <td><%=users[i].username%></td>
-                    
-                       
-                    
-                    <td><a href="/admin/edit-user?id=<%=users[i]._id%>" class="btn btn-primary">Edit</a>
-                        
-                            <%if(users[i].isBlocked == false){%>
-                           
-                           
-                            <a href="/admin/block-user?id=<%=users[i]._id%>" class="btn btn-warning"
-                                onclick="return confirm('Are you sure you want to block the user')">block</a>
+        <div class="col-12 card  bg-light  d-flex align-items-center mt-5 mb-3 " style="background-color:#E0E0E0 !important; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;">
+            <div class="col-md-10 justify-content-center mt-4">
+                <table id="form" class="table table-striped nowrap" style="border: 1px; width:100%;" >
+                    <thead>
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <%for(i=0;i<users.length;i++){%>
+                        <tr>
+                            <td><%=i+1%></td>
+                            <td ><%=users[i].name%></td>
+                            <td><%=users[i].username%></td>
+                            
+                               
+                            
+                            <td>
                                 
-
-                                <%}else{%>
-                                    <a href="/admin/block-user?id=<%=users[i]._id%>" class="btn btn-success"
-                                        onclick="return confirm('Are you sure you want to Unblock the user')">unblock</a>
+                                    <%if(users[i].isBlocked == false){%>
                                    
-                                        <%}%>
-                                    <a href="/admin/delete-users?id=<%=users[i]._id%>" class="btn btn-danger"
-                                        onclick="return confirm('Are you sure you want to delete')">Delete</a>
+                                   
+                                    <a href="/admin/block-user?id=<%=users[i]._id%>" class="btn btn-warning"
+                                        onclick="return confirm('Are you sure you want to block the user')">block</a>
+                                        
+        
+                                        <%}else{%>
+                                            <a href="/admin/block-user?id=<%=users[i]._id%>" class="btn btn-success"
+                                                onclick="return confirm('Are you sure you want to Unblock the user')">unblock</a>
+                                           
+                                                <%}%>
+                                            
+        
+                            </td>
+                            <%}%>
+                        </tr>
+                        
+                    </tbody>
+                </table>
 
-                    </td>
-                    <%}%>
-                </tr>
-                
-            </tbody>
-        </table>
+          
+            </div>
+          </div>
+        
       </div>
 
   </div>
