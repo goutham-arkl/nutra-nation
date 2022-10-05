@@ -16,7 +16,8 @@
                                 <th scope="col">pincode</th>
                                 <th scope="col">Mobile</th>
                                 <th scope="col">Amount</th>
-                                <th scope="col">status</th>
+                                <th  class="notExport" scope="col">status</th>
+                                <th hidden>status</th>
                                
                             </tr>
                         </thead>
@@ -29,6 +30,7 @@
                                 <td><%=orders[i].deliveryDetails.pincode%></td>
                                 <td><%=orders[i].deliveryDetails.mobile%></td>
                                 <td><%=orders[i].totalAmount%></td>
+                                
           
                                
                                 <td>
@@ -53,6 +55,7 @@
                                         <%}%>
                                   
                                   </td>
+                                  <td><%=orders[i].status%></td>
                                    
                                 
                             </tr>

@@ -2,8 +2,34 @@
     $(document).ready(function () {
         $('#form').DataTable({
             dom: 'Bfrtip',
+            "order": [[1, "desc"]],
+            "columnDefs": [
+                {
+                    "targets": 1,
+                    "type": "date-eu"
+                },
+                {
+                    target: 7,
+                    visible: false,
+                }
+            ],
             buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                    className: 'btn btn-default',
+                    exportOptions: {
+                        columns: ':not(.notExport)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    text: 'PDF',
+                    className: 'btn btn-default',
+                    exportOptions: {
+                        columns: ':not(.notExport)'
+                    }
+                }
             ],
 
             responsive: {

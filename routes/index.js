@@ -26,7 +26,7 @@ const authToken = "054ec7a210dd95f686eefb8c37a525ab";
 const client = require("twilio")(accountSID, authToken);
 
 
-router.get("/err",(req,res)=>{
+router.get("/err", (req, res) => {
   console.log('dffsdgdfgdfghfdhgf');
   res.render('404')
 })
@@ -148,43 +148,24 @@ router.post("/verify-otp", (req, res) => {
         res.redirect('/')
       }),
     );
-
-
-
-
-  // client.verify
-  //   .services(serviceSID)
-  //   .verificationChecks.create({
-  //     to: "+919961588211",
-  //     code: otp,
-  //   })
-  //   .then((resp) => {
-  //     console.log("otp res", { resp });
-  //     if (resp.valid) {
-  //       req.session.user = true;
-  //       res.redirect("/");
-  //     } else {
-  //       res.redirect("/login");
-  //     }
-  //   });
 });
 
 router.get("/view-profile", async (req, res) => {
- try {
-  let userId = req.session.user._id;
-  user = req.session.user;
-  let orders = await userHelper.deliveredOrders(userId);
-  console.log(orders);
-  res.render("profile", {
-    username: req.session.user,
-    user,
-    orders,
-    cartCount: null,
-  })
-  
- } catch (error) {
-  res.redirect('/err')
- }
+  try {
+    let userId = req.session.user._id;
+    user = req.session.user;
+    let orders = await userHelper.deliveredOrders(userId);
+    console.log(orders);
+    res.render("profile", {
+      username: req.session.user,
+      user,
+      orders,
+      cartCount: null,
+    })
+
+  } catch (error) {
+    res.redirect('/err')
+  }
 });
 
 router.get("/edit-profile", (req, res) => {
@@ -193,29 +174,25 @@ router.get("/edit-profile", (req, res) => {
   res.render("edituser", { user: req.session.user, cartCount: null });
 });
 
-router.get("/shop",async (req, res) => {
-  // if(req.session.user){
-  // let wishlist=await userHelper.wishlistid(req.session.user._id)
-
-  // }
-  await productHelpers.viewproducts().then((product) => {
+router.get("/shop", async (req, res) => {
+  await productHelpers.viewproducts().then((product)=> {
     cartCount = null;
-    res.render("shop", { user: req.session.user,product,cartCount });
+    res.render("shop", { user: req.session.user, product, cartCount });
   });
 });
 router.get("/single-product", (req, res) => {
-  
-    let proId = req.query.id;
 
-    productHelpers.getProductDetails(proId).then((product) => {
-      console.log(product);
-      let cartCount = null
-      res.render("singleproduct", { user: req.session.user, product, cartCount });
-    }).catch(()=>{
-      res.redirect('/err')
+  let proId = req.query.id;
 
-    })
- 
+  productHelpers.getProductDetails(proId).then((product) => {
+    console.log(product);
+    let cartCount = null
+    res.render("singleproduct", { user: req.session.user, product, cartCount });
+  }).catch(() => {
+    res.redirect('/err')
+
+  })
+
 });
 
 router.get("/category/:id", (req, res) => {
@@ -241,20 +218,19 @@ router.get("/wishlist", verifyLogin, async (req, res) => {
   let userId = req.session.user._id
 
   let products = await userHelper.getWishlistProducts(userId)
-  if(products.length>0)
-  {
-  res.render('wishlist', { user: req.session.user, cartCount: null, products, err: false })
+  if (products.length > 0) {
+    res.render('wishlist', { user: req.session.user, cartCount: null, products, err: false })
 
-  }else{
-  
-    res.render('empty-wishlist',{user:req.session.user,cartCount:null})
+  } else {
+
+    res.render('empty-wishlist', { user: req.session.user, cartCount: null })
   }
 
- 
+
 })
 
 router.get("/add-to-wishlist/:id", verifyLogin, (req, res) => {
- 
+
 
 
   userHelper.addToWishlist(req.params.id, req.session.user._id).then(() => {
@@ -267,7 +243,7 @@ router.get("/add-to-wishlist/:id", verifyLogin, (req, res) => {
 //wishlist//
 
 router.get("/add-to-cart/:id", verifyLogin, (req, res) => {
- 
+
 
   console.log(req.session.user._id);
   userHelper.addToCart(req.params.id, req.session.user._id).then(() => {
@@ -318,29 +294,32 @@ router.post("/change-product-quantity", (req, res, next) => {
 
 router.get("/proceedToPay", async (req, res) => {
   let cartCount = null;
-  
+
 
   let address = await userHelper.getaddress(req.session.user._id)
+  let coupon = await userHelper.getCoupons()
   if (address) {
     await userHelper.getTotalAmount(req.session.user._id).then((total) => {
-    
+
       console.log(total);
       res.render("place-order", {
         cartCount,
         user: req.session.user,
         total,
+        coupon,
         address,
       });
     });
 
   } else {
     await userHelper.getTotalAmount(req.session.user._id).then((total) => {
-     
-     
+
+
       res.render("place-order", {
         cartCount,
         user: req.session.user,
         total,
+        coupon,
         address,
 
       });
@@ -349,17 +328,17 @@ router.get("/proceedToPay", async (req, res) => {
 
 });
 
-router.post("/place-order", async (req, res) => {
+router.post("/place-order", async (req,res) => {
 
 
   let products = await userHelper.getCartProductList(req.body.userId);
 
   let totalPrice = await userHelper.getTotalAmount(req.body.userId);
-  
- 
-  if(req.session.user.coupon)
-  {
-   totalPrice=(totalPrice)-(req.session.user.discount)
+
+
+
+  if (req.session.user.coupon) {
+    totalPrice = (totalPrice) - (req.session.user.discount)
   }
 
   userHelper
@@ -367,7 +346,7 @@ router.post("/place-order", async (req, res) => {
     .then((orderId) => {
       if (req.body["paymentMethod"] == "cod" || req.body["paymentMethod"] == "paypal") {
 
-        res.json({ codSuccess: true });
+        res.json({ codSuccess:true });
 
 
       } else {
@@ -453,93 +432,41 @@ router.post('/apply-coupon', async (req, res) => {
   let response = {}
   console.log(req.body);
   if (req.body.name == '') {
-    console.log('lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll');
     response.Total = req.body.total
     response.noCoupon = true
     res.json(response)
   } else {
     let couponDetails = await userHelper.getCouponDetails(req.body.name)
     if (couponDetails) {
-      let percent = parseInt(couponDetails.discount, 10)
-      let offer = req.body.total * percent / 100
-      let total = req.body.total - offer
-      console.log(total,'/////////////////////////');
-      response.total = total
-      req.session.total = total
-      req.session.coupon = true
-      res.json(response)
+      if (couponDetails.expirydate > new Date()) {
+        let Total = await userHelper.getTotalAmount(req.session.user._id)
+        if (couponDetails.min < Total) {
+          let percent = parseInt(couponDetails.discount, 10)
+          let offer = req.body.total * percent / 100
+          let total = req.body.total - offer
+          response.offer=offer
+          response.total = total
+          req.session.total = total
+          req.session.coupon = true
+          res.json(response)
+
+        }else{
+          let a=couponDetails.min - Total
+          response.min=a
+          res.json(response)
+        }
+
+      } else {
+        response.exp = true
+        res.json(response)
+      }
+
     } else {
       response.noExist = true
-      res.json(response.noExist)
+      res.json(response)
     }
   }
 })
-
-// router.post('/apply-coupon',async(req,res)=>{
-//   console.log(req.body);
-//   if(req.body.name!=''){
-//   let coupon= await userHelper.getCouponDetails(req.body.name)
-//   console.log(coupon.length);
-//   let couponLength=coupon.length
-//   if(couponLength>0){
-//     let address = await userHelper.getaddress(req.session.user._id)
-
-//     if (address) {
-//       await userHelper.getTotalAmount(req.session.user._id).then((total) => {
-        
-//         let tutal=total[0].total
-//         console.log(tutal);
-//         console.log(coupon[0].discount);
-//         let discount=(tutal)*(coupon[0].discount/100)
-//         console.log(discount);
-//         req.session.user.coupon=true
-//         req.session.user.discount=discount
-//        let mtotal=(tutal-discount)
-//         console.log(mtotal);
-//         total=mtotal
-        
-      
-//         res.render("place-order", {
-//           cartCount:null,
-//           user: req.session.user,
-//           total,
-//           address,
-//         });
-//       });
-  
-//     } else {
-//       await userHelper.getTotalAmount(req.session.user._id).then((total) => {
-       
-//         let tutal=total[0].total
-//         console.log(tutal);
-//         console.log(coupon[0].discount);
-//         let discount=(tutal)*(coupon[0].discount/100)
-//         console.log(discount);
-//         req.session.user.discount=discount
-//        let mtotal=(tutal-discount)
-//         console.log(mtotal);
-//         total=mtotal
-       
-//         res.render("place-order", {
-//           cartCount:null,
-//           user: req.session.user,
-//           total,
-//           err:false,
-//           address,
-  
-//         });
-//       });
-//     }
-    
-//   }else{
-//     res.redirect('/proceedToPay')
-//   }
-// }else{
-//   res.redirect('/proceedToPay')
-// }
-
-// })
-
 router.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/");

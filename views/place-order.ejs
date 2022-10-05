@@ -128,16 +128,54 @@
   
                     <div class="mb-5">
                       <div class="form-outline ">
-                        <span id="err"></span>
+                        <span class="text-danger" id="err"></span>
                         <input type="text" name="total" value="<%=total%>" hidden>
                         <input type="text" id="form3Examplea2" name="name" class="form-control"/>
                         <label class="form-label text-dark" for="form3Examplea2">Enter your code</label>
                         <div class="d-flex flex-row-reverse bd-highlight">
                           <button class="btn btn-dark mt-2" type="submit" onclick="addCoupon()">apply</button>
                         </div>
+                        <div class="mt-5">
+                          <a data-toggle="modal" data-target="#exampleModal" class="text-danger" href="">Show Coupons</a>
+                        </div>
+                      
                        
                       </div>
                     </div>
+
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Coupons</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <%for(i=0;i<coupon.length;i++){%>
+                              <dl>
+                                <dt><%=coupon[i].name%></dt>
+                                <dd>DiscountPrice:<%=coupon[i].discount%>% || Expires on: <%=coupon[i].expirydate%> || <span class="text-danger"><sup>*</sup>min: <%=coupon[i].min%></span></dd>
+                              </dl>
+                              <%}%>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <li class="list-group-item d-flex justify-content-between">
+                      <span>Total Price</span>
+                      <strong>Rs.<span><%=total%></span></strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                      <span>DiscountPrice</span>
+                      <strong>Rs.<span id="discount">0.00</span></strong>
+                    </li>
+
             <li class="list-group-item d-flex justify-content-between">
               <span>Total (INR)</span>
               <strong>Rs.<span id="totalA"><%=total%></span></strong>
@@ -162,7 +200,6 @@
   <script>
 
 function displayCheckout() {
-
 let list1 = document.getElementById("checkout-button").classList
 let list2 = document.getElementById("paypal").classList;
 list1.add('disbtn')

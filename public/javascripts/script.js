@@ -50,16 +50,23 @@ $("#click-me").click(function(){
                 if (response.total) {
                   console.log(response.total);
                   let value=response.total
+                  let discount=response.offer
+                  $('#discount').html(discount)
                   $('#totalA').html(value)
-                  
+                  // errorCoupon.innerHTML = ""
+                  // document.getElementById('totalA').innerText = response.total
+                }else if(response.exp){
+                  let value="Coupon Expired"
+                  console.log(value);
+                  $('#err').html(value)
 
-                    // errorCoupon.innerHTML = ""
-                    // document.getElementById('totalA').innerText = response.total
-                } else if (response.noCoupon) {
-                    errorCoupon.innerHTML = "No Coupon"
-                    let value=response.noCoupon
+                } else if (response.noExist) {
+                    let value="Coupon Doesn't Exist"
                   $('#err').html(value)
                     // document.getElementById('totalAmount').innerText = response.Total
+                }else if(response.min){
+                  let value="Purchase for"+response.min+ "to use this coupon"
+                  $('#err').html(value)
                 }
                 else {
                     

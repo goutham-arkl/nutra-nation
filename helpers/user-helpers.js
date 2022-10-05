@@ -619,11 +619,17 @@ module.exports = {
     getCouponDetails:(coupon)=>{
         return new Promise(async(resolve,reject)=>{
            let details=await db.get().collection(collections.COUPON_COLLECTION).findOne({name:coupon})
-                  console.log(details);
+                
                     resolve(details)
               
 
         
+        })
+    },
+    getCoupons:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let coupon=await db.get().collection(collections.COUPON_COLLECTION).find().toArray()
+            resolve(coupon)
         })
     }
     

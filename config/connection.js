@@ -4,7 +4,7 @@ const state={
 }
 
 module.exports.connect=function(done){
-     const url='mongodb://localhost:27017'
+     const url='mongodb+srv://admin:admin@cluster0.sf0mj.mongodb.net/?retryWrites=true&w=majority'
      const dbname='NutraNation'
 
 
