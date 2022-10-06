@@ -285,6 +285,13 @@ module.exports={
             })
           
         })
+    },
+    getcoupons:()=>{
+        return new Promise(async(resolve,reject)=>{
+           let coupons= db.get().collection(collections.COUPON_COLLECTION).find().toArray()
+           console.log(coupons);
+           resolve(coupons)
+        })
     }
 
 }

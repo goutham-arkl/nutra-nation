@@ -18,7 +18,7 @@
                     <p class="card-text element font-weight-light">Rs <%=product[i].description%></p>
                      <div class="d-flex justify-content-between">
                         <p class="card-text  font-weight-bold  ">Rs. <%=product[i].price%></p>
-                        <button class="btn btn-dark">ADD TO CART</button>
+                        <button class="btn btn-dark" onclick="addToCart('<%=product[i]._id%>')">ADD TO CART</button>
                      </div>
                    
                 

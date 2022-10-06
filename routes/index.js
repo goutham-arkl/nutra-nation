@@ -2,6 +2,8 @@ var express = require("express");
 const adminHelpers = require("../helpers/admin-helpers");
 const productHelpers = require("../helpers/product-helpers");
 var router = express.Router();
+require("dotenv").config();
+
 var MongoClient = require("mongodb").MongoClient;
 var userHelper = require("../helpers/user-helpers");
 const Promise = require("promise");
@@ -20,9 +22,9 @@ const paypalClient = new paypal.core.PayPalHttpClient(
   )
 )
 
-const serviceSID = "VAbb6f0b38d4035a60265ce8078ef63349";
-const accountSID = "AC3795f14c62a65687ba0c45647bde5306";
-const authToken = "054ec7a210dd95f686eefb8c37a525ab";
+const serviceSID = process.env.TWILIO_SERVICE_ID
+const accountSID = process.env.TWILIO_ACCOUNT_SID
+const authToken = process.env.TWILIO_AUTH_TOKEN
 const client = require("twilio")(accountSID, authToken);
 
 
@@ -243,9 +245,6 @@ router.get("/add-to-wishlist/:id", verifyLogin, (req, res) => {
 //wishlist//
 
 router.get("/add-to-cart/:id", verifyLogin, (req, res) => {
-
-
-  console.log(req.session.user._id);
   userHelper.addToCart(req.params.id, req.session.user._id).then(() => {
     res.redirect("/");
   });

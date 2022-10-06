@@ -379,14 +379,16 @@ router.post('/add-banner', (req, res) => {
 
 
 })
-router.get('/add-coupon',(req,res)=>{
-  res.render('coupon')
+router.get('/add-coupon',async(req,res)=>{
+ let coupons= await adminHelper.getcoupons()
+  res.render('coupon',{coupons})
 })
 
 router.post('/coupon',(req,res)=>{
   adminHelper.addCoupon(req.body)
-  res.redirect('/add-coupon')
+  res.redirect('/admin/add-coupon')
 })
+
 
 router.get('/logout', (req, res) => {
   req.session.destroy()
