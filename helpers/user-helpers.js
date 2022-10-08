@@ -379,7 +379,6 @@ module.exports = {
             var instance = new Razorpay({ key_id: 'rzp_test_hoUa0LVqQYvuNv', key_secret: 'XDJ38OgMbiMNYxLBKANZ5fXM' })
 
 
-
             var options = {
                 amount: total * 100,  // amount in the smallest currency unit
                 currency: "INR",
